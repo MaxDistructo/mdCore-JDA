@@ -25,7 +25,7 @@ object Utils {
      *   @param startAt The value to start from
      *   @return A string built off of all the values the array after the specified value.
      */
-    fun makeNewString(input: Array<Any>, startAt: Int): String {
+    fun makeNewString(input: List<Any>, startAt: Int): String {
         val stringBuilder = StringBuilder()
         var i = startAt
         while (i < input.size) {
@@ -145,7 +145,7 @@ object Utils {
      *   @return The String with new lines
      */
 
-    fun makeNewLineString(input: Array<String?>, startAt: Int): String {
+    fun makeNewLineString(input: List<String?>, startAt: Int): String {
         val stringBuilder = StringBuilder()
         var i = startAt
         while (i < input.size) {

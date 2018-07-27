@@ -110,7 +110,7 @@ object Config {
 
     }
 
-    fun readServerGamesConfig(guild: Guild): Array<String?> {
+    fun readServerGamesConfig(guild: Guild): List<String?> {
         val currentRelativePath = Paths.get("")
         val s = currentRelativePath.toAbsolutePath().toString()
         val file = File(s + "/config/guild/" + guild.idLong + ".txt")
@@ -127,10 +127,10 @@ object Config {
         val root = JSONObject(tokener!!)
         println("Converted JSON file to JSONObject")
         val array = root.getJSONArray("GameChannels")
-        val longArray = arrayOfNulls<String>(array.length())
+        var longArray = listOf<String>()
         var i = 0
         while (i < array.length()) {
-            longArray[i] = array.getString(i)
+            longArray += array.getString(i)
             i++
         }
         return longArray
