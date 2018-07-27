@@ -1,6 +1,7 @@
 package maxdistructo.discord.core.jda.command
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.core.hooks.ListenerAdapter
 import java.util.*
 
@@ -30,13 +31,11 @@ abstract class IBaseListener : ListenerAdapter() {
         }
     }
 
-    @Override
-    abstract fun onMessageReceivedEvent(event : MessageReceivedEvent)
+    abstract override fun onMessageReceived(event: MessageReceivedEvent)
     abstract var commandsArray : List<BaseCommand>
     abstract var adminCommands : List<BaseCommand>
     abstract var modCommands : List<BaseCommand>
     abstract val name : String
-
     abstract var commandRegistry : LinkedList<ICommand>
     abstract fun addCommand(command : ICommand)
     abstract fun createCommands()
