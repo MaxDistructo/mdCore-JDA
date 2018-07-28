@@ -1,10 +1,10 @@
 package maxdistructo.discord.core.jda.impl
 
+import ch.qos.logback.classic.Logger
 import maxdistructo.discord.core.jda.command.IBaseListener
 import maxdistructo.discord.core.jda.obj.IBot
 import maxdistructo.discord.core.jda.priv.Client
 import net.dv8tion.jda.core.JDA
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -19,7 +19,7 @@ class Bot : IBot {
     override val client: JDA
         get() = privClient
     override val logger: Logger
-        get() = LoggerFactory.getLogger(client.selfUser.name)
+        get() = LoggerFactory.getLogger(client.selfUser.name) as Logger
 
     override fun registerListeners() {
         for(listener in listeners){

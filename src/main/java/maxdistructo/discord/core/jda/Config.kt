@@ -167,6 +167,14 @@ object Config {
 
         return lines
     }
+
+    fun checkDebug() : Boolean{
+        val config = readConfig()
+        return config.getBoolean("debug")
+    }
+    fun readConfig() : JSONObject{
+        return Utils.readJSONFromFile("/config/config.txt")
+    }
 }
 
 

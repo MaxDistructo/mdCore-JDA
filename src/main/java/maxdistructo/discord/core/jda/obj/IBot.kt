@@ -1,8 +1,8 @@
 package maxdistructo.discord.core.jda.obj
 
+import ch.qos.logback.classic.Logger
 import maxdistructo.discord.core.jda.command.IBaseListener
 import net.dv8tion.jda.core.JDA
-import org.slf4j.Logger
 import java.util.*
 
 /**

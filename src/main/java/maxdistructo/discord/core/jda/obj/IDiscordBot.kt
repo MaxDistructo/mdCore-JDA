@@ -1,8 +1,9 @@
 package maxdistructo.discord.core.jda.obj
 
+import ch.qos.logback.classic.Logger
 import maxdistructo.discord.core.jda.command.IBaseListener
 import net.dv8tion.jda.core.JDA
-import org.slf4j.Logger
+
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -26,7 +27,7 @@ interface IDiscordBot {
             value.first.registerCommands(value.second)
             bot.addListener(value.second)
         }
-        logger = LoggerFactory.getLogger(this::class.java)
+        logger = LoggerFactory.getLogger(this::class.java) as Logger
         bot.init()
     }
 }

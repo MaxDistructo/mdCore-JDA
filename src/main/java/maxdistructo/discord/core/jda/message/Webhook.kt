@@ -8,7 +8,6 @@ package maxdistructo.discord.core.jda.message
  */
 
 import com.mashape.unirest.http.Unirest
-import maxdistructo.discord.core.jda.impl.Bot
 import net.dv8tion.jda.core.entities.Channel
 import net.dv8tion.jda.core.entities.Guild
 import net.dv8tion.jda.core.entities.Icon
