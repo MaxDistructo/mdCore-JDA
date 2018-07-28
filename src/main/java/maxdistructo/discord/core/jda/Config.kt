@@ -47,7 +47,7 @@ object Config {
     }
 
     fun readServerAdminConfig(guild: Guild): List<Long> {
-        val root = Utils.readJSONFromFile("/config/guild" + guild.idLong + ".txt")
+        val root = Utils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
         val array = root.getJSONArray("Admins")
         val longArray = LongArray(array.length())
         var i = 0
