@@ -163,9 +163,10 @@ object Utils {
      */
 
     fun readJSONFromFile(fileName: String): JSONObject {
-
         val file = File(s + fileName)
-
+        if(!file.exists()){
+            createNewJSONFile(fileName)
+        }
         val uri = file.toURI()
         var tokener: JSONTokener? = null
         try {
@@ -240,6 +241,16 @@ object Utils {
             e.printStackTrace()
         }
 
+    }
+
+    /**
+     * Creates a new file with an empty JSONObject in it
+     * @param string The relative location to the running directory
+     */
+    fun createNewJSONFile(string : String){
+        val file = File(s + string)
+        file.createNewFile()
+        writeJSONToFile(string, JSONObject())
     }
 
 
