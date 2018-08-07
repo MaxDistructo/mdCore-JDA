@@ -23,7 +23,6 @@ class Bot : IBot {
 
     override fun registerListeners() {
         for(listener in listeners){
-            listener.createCommands() //Must add commands to listener which grabs commands from ICommandRegistry and registers them to itself.
             privClient.addEventListener(listener)
             logger.info("Registered Listener: " + listener.name)
         }
