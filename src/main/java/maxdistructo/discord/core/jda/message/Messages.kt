@@ -33,13 +33,7 @@ object Messages {
 
     fun sendDM(user: User, message: String): Message {
         var pm: PrivateChannel? = null
-        user.openPrivateChannel()
-        for (value in user.jda.privateChannels) {
-            if (value.user == user) {
-                pm = value
-                break
-            }
-        }
+        pm = user.openPrivateChannel().complete()
         lateinit var builder: MessageAction
         assert(pm != null)
         builder = pm!!.sendMessage(message)

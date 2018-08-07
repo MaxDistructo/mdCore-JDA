@@ -1,6 +1,11 @@
 package maxdistructo.discord.core.jda.command
 
-import maxdistructo.discord.core.command.ICommandType
+/**
+ * @class BaseCommand
+ * @description The default implementation of ICommand
+ * @constructor ()
+ * @constructor (commandName, type)
+ */
 
 open class BaseCommand() : ICommand {
 
@@ -23,6 +28,8 @@ open class BaseCommand() : ICommand {
         get() = false
     override val hasOutput : Boolean
         get() = true
+    override val isSubcommand: Pair<Boolean, String>
+        get() = Pair(false, "")
 
     constructor(commandNameIn: String, typeIn : Enum<ICommandType>) : this() {
         name = commandNameIn

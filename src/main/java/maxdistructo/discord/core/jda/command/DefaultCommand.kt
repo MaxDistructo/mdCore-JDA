@@ -1,6 +1,5 @@
 package maxdistructo.discord.core.jda.command
 
-import maxdistructo.discord.core.command.ICommandType
 import net.dv8tion.jda.core.entities.Message
 
 

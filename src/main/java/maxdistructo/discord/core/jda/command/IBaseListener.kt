@@ -12,7 +12,7 @@ import java.util.*
  */
 
 abstract class IBaseListener : ListenerAdapter() {
-    fun registerCommand(vararg commands : BaseCommand){
+    fun registerCommand(vararg commands : ICommand){
         for(command in commands) {
             when {
                 command.requiresAdmin -> {
@@ -32,12 +32,11 @@ abstract class IBaseListener : ListenerAdapter() {
     }
 
     abstract override fun onMessageReceived(event: MessageReceivedEvent)
-    abstract var commandsArray : List<BaseCommand>
-    abstract var adminCommands : List<BaseCommand>
-    abstract var modCommands : List<BaseCommand>
+    abstract var commandsArray : List<ICommand>
+    abstract var adminCommands : List<ICommand>
+    abstract var modCommands : List<ICommand>
     abstract val name : String
     abstract var commandRegistry : LinkedList<ICommand>
     abstract fun addCommand(command : ICommand)
-    abstract fun createCommands()
 
 }

@@ -1,4 +1,4 @@
-package maxdistructo.discord.core.command
+package maxdistructo.discord.core.jda.command
 
 /**
  * @enum ICommandType

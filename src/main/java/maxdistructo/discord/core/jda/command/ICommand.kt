@@ -1,6 +1,5 @@
 package maxdistructo.discord.core.jda.command
 
-import maxdistructo.discord.core.command.ICommandType
 import net.dv8tion.jda.core.entities.Message
 
 /**
@@ -21,4 +20,5 @@ interface ICommand{
     val helpMessage : String
     val hasOutput : Boolean
     val commandType : Enum<ICommandType>
+    val isSubcommand : Pair<Boolean, String>
 }
