@@ -8,6 +8,8 @@ package maxdistructo.discord.core.jda.command
  */
 
 open class BaseCommand() : ICommand {
+    override val isEventCommand: Boolean
+        get() = false
 
     private var name = "command"
     private var type = ICommandType.NORMAL

@@ -3,12 +3,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.51"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.60"
     }
 }
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.51"
+    id "org.jetbrains.kotlin.jvm" version "1.2.60"
 }
 
 apply plugin: 'java'
@@ -27,10 +27,9 @@ repositories {
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.25'
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version:'1.2.51'
-    compile group: 'com.mashape.unirest', name: 'unirest-java', version:'1.4.9'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version:'1.2.60'
     compile group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version:'0.22.5'
-    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version:'1.2.51'
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version:'1.2.60'
     compile group: 'org.json', name: 'json', version:'20180130'
     compile group: 'commons-io', name: 'commons-io', version:'2.6'
     compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'

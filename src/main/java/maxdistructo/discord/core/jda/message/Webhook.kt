@@ -7,34 +7,40 @@ package maxdistructo.discord.core.jda.message
  * @licence Copyright 2018 - MaxDistructo
  */
 
-import com.mashape.unirest.http.Unirest
 import net.dv8tion.jda.core.entities.Icon
 import net.dv8tion.jda.core.entities.MessageEmbed
 import net.dv8tion.jda.core.entities.TextChannel
 import net.dv8tion.jda.webhook.WebhookClient
 import net.dv8tion.jda.webhook.WebhookClientBuilder
 import net.dv8tion.jda.webhook.WebhookMessageBuilder
-import org.json.JSONObject
 import java.net.URL
 
 object Webhook {
 
     fun send(channel: TextChannel, name: String, avatar: String, message: String) {
         val webhook = defaultWebhook(channel)
-        Unirest.post("https://discordapp.com/api/webhooks/" + webhook.id + "/" + webhook.token)
-                .header("Content-Type", "application/json")
-                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0")
-                .body(JSONObject().put("content", message).put("avatar_url", avatar).put("username", name))
-                .asJsonAsync()
+        try {
+            webhook.manager.setName(name).setAvatar(Icon.from(URL(avatar).openStream())).complete(true)
+        }
+        catch(e : Exception){
+            Messages.throwError(e)
+        }
+        val builder : WebhookClientBuilder = webhook.newClient()
+        val client : WebhookClient = builder.build()
+        val messageBuilder = WebhookMessageBuilder()
+        messageBuilder.setContent(message)
+        client.send(messageBuilder.build())
+        client.close()
     }
 
     fun send(channel: TextChannel, message: String) {
         val webhook = defaultWebhook(channel)
-        Unirest.post("https://discordapp.com/api/webhooks/" + webhook.id + "/" + webhook.token)
-                .header("Content-Type", "application/json")
-                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0")
-                .body(JSONObject().put("content", message))
-                .asJsonAsync()
+        val builder : WebhookClientBuilder = webhook.newClient()
+        val client : WebhookClient = builder.build()
+        val messageBuilder = WebhookMessageBuilder()
+        messageBuilder.setContent(message)
+        client.send(messageBuilder.build())
+        client.close()
     }
 
     fun send(webhook: net.dv8tion.jda.core.entities.Webhook, message: String) {
@@ -43,12 +49,14 @@ object Webhook {
         val messageBuilder = WebhookMessageBuilder()
         messageBuilder.setContent(message)
         client.send(messageBuilder.build())
+        client.close()
     }
 
     fun send(webhook: net.dv8tion.jda.core.entities.Webhook, vararg embeds: MessageEmbed){
         val builder : WebhookClientBuilder = webhook.newClient()
         val client : WebhookClient = builder.build()
         client.send(embeds)
+        client.close()
     }
 
     fun defaultWebhook(channel : TextChannel) : net.dv8tion.jda.core.entities.Webhook{

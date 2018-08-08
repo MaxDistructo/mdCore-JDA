@@ -30,7 +30,6 @@ abstract class IBaseListener : ListenerAdapter() {
             }
         }
     }
-
     abstract override fun onMessageReceived(event: MessageReceivedEvent)
     abstract var commandsArray : List<ICommand>
     abstract var adminCommands : List<ICommand>
