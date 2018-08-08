@@ -46,7 +46,7 @@ object Roles {
             Messages.sendMessage(message.channel, "The role $roleL was not found.")
             Thread.interrupted()
         }
-        mentioned.guild.controller.addSingleRoleToMember(mentioned, role)
+        mentioned.guild.controller.addSingleRoleToMember(mentioned, role).complete(true)
     }
 
     fun changeColor(role: Role, color: String) {
@@ -56,7 +56,7 @@ object Roles {
         } else {
             hex = Color.decode("#$color")
         }
-        role.manager.setColor(hex)
+        role.manager.setColor(hex).complete(true)
     }
 
     fun makeNewRole(guild: Guild, roleName: String, hoist: Boolean, mentionable: Boolean): Role {

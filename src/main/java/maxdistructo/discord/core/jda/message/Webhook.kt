@@ -2,46 +2,24 @@ package maxdistructo.discord.core.jda.message
 
 /**
  * @object Webhook
- * @description Contains methods to send webhook messages to Discord. This may break with any update of Discord4J cause of how it is programmed.
+ * @description Contains methods to send webhook messages to Discord.
  * @author MaxDistructo
  * @licence Copyright 2018 - MaxDistructo
  */
 
 import com.mashape.unirest.http.Unirest
-import net.dv8tion.jda.core.entities.Channel
-import net.dv8tion.jda.core.entities.Guild
 import net.dv8tion.jda.core.entities.Icon
+import net.dv8tion.jda.core.entities.MessageEmbed
+import net.dv8tion.jda.core.entities.TextChannel
+import net.dv8tion.jda.webhook.WebhookClient
+import net.dv8tion.jda.webhook.WebhookClientBuilder
+import net.dv8tion.jda.webhook.WebhookMessageBuilder
 import org.json.JSONObject
 import java.net.URL
 
 object Webhook {
 
-    fun createWebhook(channel: Channel, name: String, avatar: String) {
-        RestRequestCreateWebhook(channel, name, avatar).complete(true)
-    }
-
-    private fun getWebhookFromGuild(guild: Guild, name: String): net.dv8tion.jda.core.entities.Webhook? {
-        for (value in guild.webhooks.complete(true)) {
-            if (value.name == name) {
-                return value
-            }
-        }
-        return null
-    }
-
-    fun name(channel: Channel, name: String, newName: String) {
-        val webhook = getByName(channel, name)
-        webhook!!.manager.setName(newName)
-    }
-
-    fun avatar(channel: Channel, name: String, avatar: String) {
-        val webhook = getByName(channel, name)
-        val stream = URL(avatar).openConnection().getInputStream()
-        webhook!!.manager.setAvatar(Icon.from(stream))
-        stream.close()
-    }
-
-    fun send(channel: Channel, name: String, avatar: String, message: String) {
+    fun send(channel: TextChannel, name: String, avatar: String, message: String) {
         val webhook = defaultWebhook(channel)
         Unirest.post("https://discordapp.com/api/webhooks/" + webhook.id + "/" + webhook.token)
                 .header("Content-Type", "application/json")
@@ -50,37 +28,36 @@ object Webhook {
                 .asJsonAsync()
     }
 
-    fun send(channel: Channel, message: String) {
+    fun send(channel: TextChannel, message: String) {
         val webhook = defaultWebhook(channel)
         Unirest.post("https://discordapp.com/api/webhooks/" + webhook.id + "/" + webhook.token)
                 .header("Content-Type", "application/json")
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0")
                 .body(JSONObject().put("content", message))
                 .asJsonAsync()
-
     }
 
-    fun send(webhook: Webhook, message: String) {
-        //TODO Write this method
+    fun send(webhook: net.dv8tion.jda.core.entities.Webhook, message: String) {
+        val builder : WebhookClientBuilder = webhook.newClient()
+        val client : WebhookClient = builder.build()
+        val messageBuilder = WebhookMessageBuilder()
+        messageBuilder.setContent(message)
+        client.send(messageBuilder.build())
     }
 
-    fun getByName(channel: Channel, name: String): net.dv8tion.jda.core.entities.Webhook? {
-        val webhookList = channel.guild.webhooks.complete(true)
-        var webhook: net.dv8tion.jda.core.entities.Webhook? = null
-        for (value in webhookList) {
-            if (value.name.toLowerCase() == name.toLowerCase()) {
-                webhook = value
+    fun send(webhook: net.dv8tion.jda.core.entities.Webhook, vararg embeds: MessageEmbed){
+        val builder : WebhookClientBuilder = webhook.newClient()
+        val client : WebhookClient = builder.build()
+        client.send(embeds)
+    }
+
+    fun defaultWebhook(channel : TextChannel) : net.dv8tion.jda.core.entities.Webhook{
+        for(webhook in channel.webhooks.complete(true)){
+            if(webhook.name == "bot"){
+                return webhook
             }
         }
-        if (webhook == null) {
-            createWebhook(channel, name, "")
-            return getByName(channel, name)
-        } else {
-            return webhook
-        }
+        return channel.createWebhook("bot").setAvatar(Icon.from(URL("https://www.shareicon.net/download/128x128//2017/06/21/887435_logo_512x512.png").openStream())).setName("bot").complete(true)
     }
 
-    fun defaultWebhook(channel: Channel): net.dv8tion.jda.core.entities.Webhook {
-        return getByName(channel, "bot")!!
-    }
 }

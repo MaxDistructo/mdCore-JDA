@@ -30,7 +30,6 @@ object Messages {
         builder.setColor(color)
         return builder.build()
     }
-
     fun sendDM(user: User, message: String): Message {
         var pm: PrivateChannel? = null
         pm = user.openPrivateChannel().complete()
