@@ -39,6 +39,20 @@ object Messages {
         return builder.complete(true)
     }
 
+    fun sendDM(user: User, message: String, waitForComplete: Boolean) {
+        var pm: PrivateChannel? = null
+        pm = user.openPrivateChannel().complete()
+        lateinit var builder: MessageAction
+        assert(pm != null)
+        builder = pm!!.sendMessage(message)
+        if(waitForComplete){
+            builder.complete()
+        }
+        else{
+            builder.submit()
+        }
+    }
+
     fun sendDM(user: User, embed: MessageEmbed): Message {
         var pm: PrivateChannel? = null
         user.openPrivateChannel()
@@ -54,9 +68,39 @@ object Messages {
         return builder.complete(true)
     }
 
+    fun sendDM(user: User, embed: MessageEmbed, waitForComplete : Boolean) {
+        var pm: PrivateChannel? = null
+        user.openPrivateChannel()
+        for (value in user.jda.privateChannels) {
+            if (value.user == user) {
+                pm = value
+                break
+            }
+        }
+        lateinit var builder: MessageAction
+        assert(pm != null)
+        builder = pm!!.sendMessage(embed)
+        if(waitForComplete){
+            builder.complete()
+        }
+        else{
+            builder.submit()
+        }
+    }
+
     fun sendMessage(channel: TextChannel, content: String): Message {
         val builder: MessageAction = channel.sendMessage(content)
         return builder.complete(true)
+    }
+
+    fun sendMessage(channel: TextChannel, content: String, waitForComplete : Boolean){
+        val builder : MessageAction = channel.sendMessage(content)
+        if(waitForComplete){
+           builder.complete()
+        }
+        else{
+            builder.submit()
+        }
     }
 
     fun sendMessage(channel: MessageChannel, content: String): Message {
@@ -64,8 +108,28 @@ object Messages {
         return builder.complete(true)
     }
 
+    fun sendMessage(channel: MessageChannel, content: String, waitForComplete : Boolean){
+        val builder : MessageAction = channel.sendMessage(content)
+        if(waitForComplete){
+            builder.complete()
+        }
+        else{
+            builder.submit()
+        }
+    }
+
     fun sendMessage(channel: TextChannel, embedded: MessageEmbed): Message {
         return channel.sendMessage(embedded).complete(true)
+    }
+
+    fun sendMessage(channel: TextChannel, embedded: MessageEmbed, waitForComplete: Boolean) {
+        val builder =  channel.sendMessage(embedded)
+        if(waitForComplete){
+            builder.complete()
+        }
+        else{
+            builder.submit()
+        }
     }
 
     fun throwError(e: Exception) {
