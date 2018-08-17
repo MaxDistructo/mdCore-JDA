@@ -20,7 +20,11 @@ object Webhook {
     fun send(channel: TextChannel, name: String, avatar: String, message: String) {
         val webhook = defaultWebhook(channel)
         try {
-            webhook.manager.setName(name).setAvatar(Icon.from(URL(avatar).openStream())).complete(true)
+            val url = URL(avatar)
+            val connection = url.openConnection()
+            val userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+            connection.setRequestProperty("User-Agent", userAgent)
+            webhook.manager.setName(name).setAvatar(Icon.from(connection.getInputStream())).complete(true)
         }
         catch(e : Exception){
             Messages.throwError(e)
