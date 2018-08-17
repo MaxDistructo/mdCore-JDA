@@ -54,14 +54,7 @@ object Messages {
     }
 
     fun sendDM(user: User, embed: MessageEmbed): Message {
-        var pm: PrivateChannel? = null
-        user.openPrivateChannel()
-        for (value in user.jda.privateChannels) {
-            if (value.user == user) {
-                pm = value
-                break
-            }
-        }
+        val pm: PrivateChannel? = user.openPrivateChannel().complete()
         lateinit var builder: MessageAction
         assert(pm != null)
         builder = pm!!.sendMessage(embed)
@@ -69,14 +62,7 @@ object Messages {
     }
 
     fun sendDM(user: User, embed: MessageEmbed, waitForComplete : Boolean) {
-        var pm: PrivateChannel? = null
-        user.openPrivateChannel()
-        for (value in user.jda.privateChannels) {
-            if (value.user == user) {
-                pm = value
-                break
-            }
-        }
+        val pm: PrivateChannel? = user.openPrivateChannel().complete()
         lateinit var builder: MessageAction
         assert(pm != null)
         builder = pm!!.sendMessage(embed)
