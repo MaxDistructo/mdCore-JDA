@@ -10,6 +10,7 @@ buildscript {
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.60"
     id "com.github.ben-manes.versions" version "0.20.0"
+    id 'com.sedmelluq.jdaction' version '1.0.2'
 }
 
 apply plugin: 'java'
