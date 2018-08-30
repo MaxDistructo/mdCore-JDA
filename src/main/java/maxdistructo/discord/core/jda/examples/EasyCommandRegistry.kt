@@ -1,6 +1,11 @@
 package maxdistructo.discord.core.jda.examples
 
-class EasyCommandRegistry : ICommandRegistry(){
+import maxdistructo.discord.core.jda.command.IBaseListener
+import maxdistructo.discord.core.jda.command.ICommand
+import maxdistructo.discord.core.jda.obj.ICommandRegistry
+import java.util.*
+
+class EasyCommandRegistry : ICommandRegistry{
 
   var commands = LinkedList<ICommand>()
 
@@ -11,7 +16,7 @@ class EasyCommandRegistry : ICommandRegistry(){
   }
 
   fun addCommand(command : ICommand){
-    commands += command
+    commands.add(command)
   }
 
 }
