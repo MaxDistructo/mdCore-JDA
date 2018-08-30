@@ -11,7 +11,7 @@ internal object Client{
         val clientBuilder = JDABuilder(AccountType.BOT) // Creates the ClientBuilder instance
         clientBuilder.setToken(token) // A to the builder
         try {
-            client = clientBuilder.buildBlocking()
+            client = clientBuilder.build().awaitReady()
         } catch (e: Exception) {
             e.printStackTrace()
             System.exit(0)
