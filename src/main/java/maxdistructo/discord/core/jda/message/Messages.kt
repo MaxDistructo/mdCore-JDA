@@ -22,9 +22,23 @@ object Messages {
         val color = user.color
         val guildImage = guild.iconUrl
         val guildName = guild.name
-        builder.setAuthor(user.user.name + "#" + user.user.discriminator, authorAvatar)
+        builder.setAuthor(user.effectiveName, "", authorAvatar)
         builder.setDescription(description)
         builder.setTitle(title)
+        builder.setTimestamp(Instant.now())
+        builder.setFooter(guildName, guildImage)
+        builder.setColor(color)
+        return builder.build()
+    }
+    fun simpleEmbed(user: Member, description: String, message: Message): MessageEmbed {
+        val builder = EmbedBuilder()
+        val authorAvatar = user.user.avatarUrl
+        val guild = message.guild
+        val color = user.color
+        val guildImage = guild.iconUrl
+        val guildName = guild.name
+        builder.setAuthor(user.effectiveName, "", authorAvatar)
+        builder.setDescription(description)
         builder.setTimestamp(Instant.now())
         builder.setFooter(guildName, guildImage)
         builder.setColor(color)
