@@ -1,17 +1,24 @@
 package maxdistructo.discord.core.jda.command
 
+import com.jagrosh.jdautilities.command.Command
+import com.jagrosh.jdautilities.command.CommandEvent
+
 /**
  * @class BaseCommand
  * @description The default implementation of ICommand
  * @constructor ()
  * @constructor (commandName, type)
+ * @help Added support for JDA-Utilities Command System
  */
 
-open class BaseCommand() : ICommand {
+open class BaseCommand() : ICommand, Command() {
+    override fun execute(event: CommandEvent) {
+        this.init(event.message, event.message.contentDisplay.split(" "))
+    }
+
     override val isEventCommand: Boolean
         get() = false
 
-    private var name = "command"
     private var type = ICommandType.NORMAL
 
     override val commandType: Enum<ICommandType>

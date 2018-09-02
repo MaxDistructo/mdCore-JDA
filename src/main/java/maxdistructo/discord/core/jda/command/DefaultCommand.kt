@@ -9,11 +9,11 @@ import net.dv8tion.jda.core.entities.Message
  * @usage Extend a class, Override the commandName, helpMessage, hasOutput, and init(IMessage, List<String>) to create a simple command with these traits.
  */
 object DefaultCommand {
-    open class AdminCommand(val name : String) : BaseCommand(name, ICommandType.ADMIN)
-    open class BasicCommand(val name : String, private val output : String) : BaseCommand(name, ICommandType.NORMAL){
+    open class AdminCommand(name : String) : BaseCommand(name, ICommandType.ADMIN)
+    open class BasicCommand(name : String, private val output : String) : BaseCommand(name, ICommandType.NORMAL){
         override fun init(message: Message, args: List<String>): String {
             return output
         }
     }
-    open class GameCommand(val name : String) : BaseCommand(name, ICommandType.GAME)
+    open class GameCommand(name : String) : BaseCommand(name, ICommandType.GAME)
 }
