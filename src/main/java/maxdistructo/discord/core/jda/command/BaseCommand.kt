@@ -12,8 +12,14 @@ import com.jagrosh.jdautilities.command.CommandEvent
  */
 
 open class BaseCommand() : ICommand, Command() {
+
     override fun execute(event: CommandEvent) {
-        this.init(event.message, event.message.contentDisplay.split(" "))
+        if(this.hasOutput) {
+            event.reply(this.init(event.message, event.message.contentDisplay.split(" ")))
+        }
+        else{
+            this.init(event.message, event.message.contentDisplay.split(" "))
+        }
     }
 
     override val isEventCommand: Boolean
