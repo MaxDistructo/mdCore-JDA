@@ -9,7 +9,7 @@ import org.slf4j.Logger
 *
 */
 
-object Client {
+internal object Client {
     var client: JDA? = null
     var LOGGER : Logger? = null
 }

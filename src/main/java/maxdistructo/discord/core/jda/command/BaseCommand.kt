@@ -2,6 +2,7 @@ package maxdistructo.discord.core.jda.command
 
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
+import net.dv8tion.jda.core.entities.Message
 
 /**
  * @class BaseCommand
@@ -11,10 +12,10 @@ import com.jagrosh.jdautilities.command.CommandEvent
  * @help Added support for JDA-Utilities Command System
  */
 
-open class BaseCommand() : ICommand, Command() {
+open class BaseCommand() : Command() {
 
-    override fun execute(event: CommandEvent) {
-        if(this.hasOutput) {
+    final override fun execute(event: CommandEvent) { //Allows for my command style to work with the JDA-Utils version but not require commands to be rewritten
+        if(!this.hasOutput) {
             event.reply(this.init(event.message, event.message.contentDisplay.split(" ")))
         }
         else{
@@ -22,37 +23,45 @@ open class BaseCommand() : ICommand, Command() {
         }
     }
 
-    override val isEventCommand: Boolean
-        get() = false
+    open val isEventCommand: Boolean
+                get() = false
 
     private var type = ICommandType.NORMAL
 
-    override val commandType: Enum<ICommandType>
+    override fun getHelp(): String { //Important Compatibility Override
+        return this.helpMessage
+    }
+    override fun getName(): String {
+        return this.commandName
+    }
+
+    open val commandType: Enum<ICommandType>
         get() = type
-    override val commandName : String
+    open val commandName : String
         get() = name
-    override val requiresAdmin: Boolean
+    open val requiresAdmin: Boolean
         get() = false
-    override val helpMessage: String
+    open val helpMessage: String
         get() = "command <params> - A description of the command"
-    override val requiresMod: Boolean
+    open val requiresMod: Boolean
         get() = false
-    override val requiresGuildOwner: Boolean
+    open val requiresGuildOwner: Boolean
         get() = false
-    override val requiresOwner: Boolean
+    open val requiresOwner: Boolean
         get() = false
-    override val hasOutput : Boolean
+    open val hasOutput : Boolean //Has Output to be outputted by the listener
         get() = true
-    override val isSubcommand: Pair<Boolean, String>
+    open val isSubcommand: Pair<Boolean, String>
         get() = Pair(false, "")
 
     constructor(commandNameIn: String, typeIn : Enum<ICommandType>) : this() {
         name = commandNameIn
         type = typeIn as ICommandType
+        this.help = this.helpMessage
     }
 
-    fun register(listener : IBaseListener) : BaseCommand {
-        listener.registerCommand(this)
-        return this
+    open fun init(message : Message, args : List<String>) : String {
+        return ""
     }
+
 }
