@@ -22,7 +22,7 @@ object Messages {
         val color = user.color
         val guildImage = guild.iconUrl
         val guildName = guild.name
-        builder.setAuthor(user.effectiveName, "", authorAvatar)
+        builder.setAuthor(user.effectiveName, authorAvatar, authorAvatar)
         builder.setDescription(description)
         builder.setTitle(title)
         builder.setTimestamp(Instant.now())
@@ -37,7 +37,7 @@ object Messages {
         val color = user.color
         val guildImage = guild.iconUrl
         val guildName = guild.name
-        builder.setAuthor(user.effectiveName, "", authorAvatar)
+        builder.setAuthor(user.effectiveName, authorAvatar, authorAvatar)
         builder.setDescription(description)
         builder.setTimestamp(Instant.now())
         builder.setFooter(guildName, guildImage)

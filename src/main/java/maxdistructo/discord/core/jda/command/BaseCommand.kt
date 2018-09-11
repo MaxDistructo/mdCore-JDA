@@ -12,7 +12,7 @@ import net.dv8tion.jda.core.entities.Message
  * @help Added support for JDA-Utilities Command System
  */
 
-open class BaseCommand() : Command() {
+abstract class BaseCommand() : Command() {
 
     final override fun execute(event: CommandEvent) { //Allows for my command style to work with the JDA-Utils version but not require commands to be rewritten
         if(!this.hasOutput) {
@@ -23,22 +23,16 @@ open class BaseCommand() : Command() {
         }
     }
 
+    init{
+        this.guildOnly = true
+    }
+
     open val isEventCommand: Boolean
                 get() = false
 
     private var type = ICommandType.NORMAL
-
-    override fun getHelp(): String { //Important Compatibility Override
-        return this.helpMessage
-    }
-    override fun getName(): String {
-        return this.commandName
-    }
-
-    open val commandType: Enum<ICommandType>
-        get() = type
-    open val commandName : String
-        get() = name
+    open val commandType: Enum<ICommandType> = type
+    open val commandName : String = name
     open val requiresAdmin: Boolean
         get() = false
     open val helpMessage: String
