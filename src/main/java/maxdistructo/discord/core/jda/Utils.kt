@@ -104,12 +104,16 @@ object Utils {
      *   @return The mentioned user or null if impossible
      */
 
-    fun getMentionedUser(message: Message): Member? {
+    fun getMentionedUser(message : Message) : Member?{
+        return getMentionedUser(message, 0)
+    }
+
+    fun getMentionedUser(message: Message, mentionNum : Int): Member? {
         val mentionedList = message.mentionedMembers
         val mentionedArray = mentionedList.toTypedArray()
         val mentioned: Member?
         if (mentionedArray.isNotEmpty()) {
-            mentioned = mentionedList[0]
+            mentioned = mentionedList[mentionNum]
         } else {
             mentioned = null
         }
@@ -190,9 +194,20 @@ object Utils {
      *   @return The user that was mentioned or matches one of the characteristics
      */
 
-    fun getUserFromInput(message: Message, input: Any): Member? {
+    fun getUserFromInput(message : Message, input: Any) : Member?{
+      return getUserFromInput(message, input, 0)
+    }
+
+    /**
+     * Extended variant of getUserFromInput for multiple mentions in a single message
+     * @param message The Message
+     * @param input The name/longID/namefragment for the user
+     * @param mentionNum The mention number in the message.
+     * @return The user that was mentioned or matches one of the characteristics
+     */
+    fun getUserFromInput(message: Message, input: Any, mentionNum : Int): Member? {
         when {
-            getMentionedUser(message) != null -> return getMentionedUser(message)
+            getMentionedUser(message) != null -> return getMentionedUser(message, mentionNum)
             convertToLong(input) != null -> return message.guild.getMemberById(convertToLong(input)!!)
             message.guild.getMembersByEffectiveName(input.toString(), true).isNotEmpty() -> return message.guild.getMembersByEffectiveName(input.toString(), true)[0]
             else ->
