@@ -1,21 +1,35 @@
 package maxdistructo.discord.core.jda
 
 import maxdistructo.discord.core.jda.message.Messages
-import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.Member
-import net.dv8tion.jda.core.entities.Message
-import net.dv8tion.jda.core.entities.Role
+import net.dv8tion.jda.core.entities.*
 import java.awt.Color
 
 /**
  * @object Roles
- * @description This class contains methods to get and modify discord roles.
+ * @description This class contains methods to get and modify Discord roles.
  * @author MaxDistructo
  */
 
 object Roles {
+
+    /**
+     * Function getRole
+     * Attempts to get a role based on the role name provided
+     * @param message The message from the guild you wish to get a role from
+     * @param role The name of the role to get. Is not case sensitive
+     */
     fun getRole(message: Message, role: String): Role? {
-        val roles = message.guild.getRolesByName(role, true)
+        return getRole(message.guild, role)
+    }
+
+    /**
+     * Function getRole
+     * Attempts to get a role based on the role name provided
+     * @param guild The guild you wish to get a role from
+     * @param role The name of the role to get. Is not case sensitive
+     */
+    fun getRole(guild : Guild, role : String) : Role?{
+        val roles = guild.getRolesByName(role, true)
         return if (roles.size != 0) {
             roles[0]
         } else {
@@ -23,21 +37,29 @@ object Roles {
         }
     }
 
+    /**
+     * Function copyRolePerms
+     * Gets the permissions from the first role and puts them on that of the second. This is a very powerful function so use it wisely.
+     * @param copy The role to get permissions from
+     * @param paste The role to paste the permissions on
+     */
+
     fun copyRolePerms(copy: Role, paste: Role) {
         val permissions = copy.permissions
         paste.permissions.addAll(permissions)
         paste.manager.givePermissions(permissions).complete(true)
     }
 
+    /**
+     * Function applyRole
+     * Applies a role to a Member.
+     * @param message A message from the guild you wish to give a role to a member
+     * @param mentioned The member you wish to get the role.
+     * @param role The name of the role you wish to apply.
+     */
+
     fun applyRole(message: Message, mentioned: Member, role: String) {
-        val roleList = message.guild.getRolesByName(role, true)
-        if (roleList.isEmpty()) {
-            Messages.sendMessage(message.channel, "The role $role was not found.")
-            Thread.interrupted()
-        }
-        if (!roleList.isEmpty()) {
-            mentioned.guild.controller.addSingleRoleToMember(mentioned, roleList[0]).complete(true)
-        }
+        applyRole(message.guild, mentioned.user, role)
     }
 
     fun applyRole(message: Message, mentioned: Member, roleL: Long) {
@@ -49,15 +71,42 @@ object Roles {
         mentioned.guild.controller.addSingleRoleToMember(mentioned, role).complete(true)
     }
 
-    fun changeColor(role: Role, color: String) {
-        val hex: Color
-        if (color.contains("#")) {
-            hex = Color.decode(color)
-        } else {
-            hex = Color.decode("#$color")
+    fun applyRole(guild : Guild, user : User, roleName : String){
+        val roleList = guild.getRolesByName(roleName, true)
+        if (roleList.isEmpty()) {
+            Thread.interrupted()
         }
-        role.manager.setColor(hex).complete(true)
+        if (!roleList.isEmpty()) {
+            guild.controller.addSingleRoleToMember(guild.getMember(user), roleList[0]).complete(true)
+        }
     }
+
+    fun applyRole(member : Member, roleName : String){
+        applyRole(member.guild, member.user, roleName)
+    }
+
+    /**
+     * Function changeColor
+     * Will change the color of a role to the one inputted as a String.
+     */
+
+    fun changeColor(role: Role, color: Color) {
+        role.manager.setColor(color).complete(true)
+    }
+
+    fun changeColor(guild : Guild, roleName : String, color : String){
+        val hex: Color = if (color.contains("#")) {
+            Color.decode(color)
+        } else {
+            Color.decode("#$color")
+        }
+        changeColor(getRole(guild, roleName)!!, hex)
+    }
+
+    /**
+     * Function makeNewRole
+     * Makes a new role in the provided guild.
+     */
 
     fun makeNewRole(guild: Guild, roleName: String, hoist: Boolean, mentionable: Boolean): Role {
         val rb = guild.controller.createRole()
