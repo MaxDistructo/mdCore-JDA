@@ -4,7 +4,7 @@ package maxdistructo.discord.core.jda.message
  * @object Webhook
  * @description Contains methods to send webhook messages to Discord.
  * @author MaxDistructo
- * @licence Copyright 2018 - MaxDistructo
+ * @license Copyright 2018 - MaxDistructo
  */
 
 import net.dv8tion.jda.core.entities.Icon
@@ -22,7 +22,7 @@ object Webhook {
         try {
             val url = URL(avatar)
             val connection = url.openConnection()
-            val userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+            val userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0"
             connection.setRequestProperty("User-Agent", userAgent)
             webhook.manager.setName(name).setAvatar(Icon.from(connection.getInputStream())).complete(true)
         }
@@ -35,6 +35,7 @@ object Webhook {
         messageBuilder.setContent(message)
         client.send(messageBuilder.build())
         client.close()
+        webhook.manager.setName("bot").complete()
     }
 
     fun send(channel: TextChannel, message: String) {
