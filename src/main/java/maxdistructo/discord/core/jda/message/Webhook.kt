@@ -35,7 +35,7 @@ object Webhook {
         messageBuilder.setContent(message)
         client.send(messageBuilder.build())
         client.close()
-        webhook.manager.setName("bot").complete()
+        webhook.delete().complete()
     }
 
     fun send(channel: TextChannel, message: String) {
@@ -46,6 +46,7 @@ object Webhook {
         messageBuilder.setContent(message)
         client.send(messageBuilder.build())
         client.close()
+        webhook.delete().complete()
     }
 
     fun send(webhook: net.dv8tion.jda.core.entities.Webhook, message: String) {
