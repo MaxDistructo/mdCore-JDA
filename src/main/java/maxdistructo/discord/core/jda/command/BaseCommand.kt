@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.entities.Message
  * @help Added support for JDA-Utilities Command System
  */
 
+@Deprecated("Use JDAUtils Command API") // TODO("Remove in 2.3 Release of mdCore-JDA")
 abstract class BaseCommand() : Command() {
 
     final override fun execute(event: CommandEvent) { //Allows for my command style to work with the JDA-Utils version but not require commands to be rewritten
