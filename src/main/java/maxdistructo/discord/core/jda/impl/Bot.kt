@@ -16,7 +16,14 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class Bot(private val token : String)  {
+/**
+ * @class Bot
+ * Sets up a simple discord bot and logger. Any values that are needed to be taken out are avaliable.
+ * @param token The private Discord Token for your bot.
+ * @param ownerId The Debug ID of the bot owner.
+ */
+
+class Bot(private val token : String, val ownerId : Long)  {
 
     private var listeners : LinkedList<ListenerAdapter> = LinkedList()
     private var commands : LinkedList<Command> = LinkedList()
@@ -24,7 +31,7 @@ class Bot(private val token : String)  {
     private var privName : String = ""
     private lateinit var privLogger : Logger
     private lateinit var privCommandClient : CommandClient
-    private var commandBuilder : CommandClientBuilder = CommandClientBuilder().useDefaultGame().setPrefix(Config.readPrefix()).setOwnerId("374517920505790464")
+    private var commandBuilder : CommandClientBuilder = CommandClientBuilder().useDefaultGame().setPrefix(Config.readPrefix()).setOwnerId("" + ownerId)
 
     val commandAPI : CommandClient
         get() = privCommandClient

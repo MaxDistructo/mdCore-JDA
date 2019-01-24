@@ -81,6 +81,23 @@ object Utils {
         return arr
     }
 
+     /**
+     *   Converts the inputed {@link org.json.JSONArray} to an List of Strings
+     *   @param array The JSON array to convert to String
+     *   @return The list or null if the convert is impossible or fails
+     */
+
+    fun toStringList(array: JSONArray?): List<String?>? {
+        if (array == null)
+            return null
+
+        var arr = listOf<String>()
+        for (i in arr.indices) {
+            arr += array.optString(i)
+        }
+        return arr
+    }
+
     /**
      *   Gets the mentioned channel from the IMessage
      *   @param message The message

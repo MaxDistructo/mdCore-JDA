@@ -18,7 +18,7 @@ import java.nio.file.Paths
 
 object Config {
 
-    @Deprecated("", ReplaceWith("Integer.valueOf(`in`.toString())")) //Use Utils.convertToInt instead. Method still exists for legacy support *WILL BE REMOVED IN v1.10 SO STOP USING THIS*
+    @Deprecated("", ReplaceWith("Integer.valueOf(`in`.toString())"))
     fun converToInt(`in`: Any): Int {
         return Integer.valueOf(`in`.toString())
     }
