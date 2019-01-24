@@ -3,6 +3,9 @@ package maxdistructo.discord.core.jda.impl
 import maxdistructo.discord.core.jda.obj.IPerms
 import maxdistructo.discord.core.jda.Utils
 import net.dv8tion.jda.core.entities.Guild
+import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.core.entities.User
+import net.dv8tion.jda.core.entities.Message
 import org.json.JSONObject
 import org.json.JSONArray
 
