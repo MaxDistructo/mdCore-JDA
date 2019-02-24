@@ -45,20 +45,16 @@ object Messages {
         return builder.build()
     }
     fun sendDM(user: User, message: String): Message {
-        var pm: PrivateChannel? = null
-        pm = user.openPrivateChannel().complete()
+        val pm: PrivateChannel =  user.openPrivateChannel().complete()
         lateinit var builder: MessageAction
-        assert(pm != null)
-        builder = pm!!.sendMessage(message)
+        builder = pm.sendMessage(message)
         return builder.complete(true)
     }
 
     fun sendDM(user: User, message: String, waitForComplete: Boolean) {
-        var pm: PrivateChannel? = null
-        pm = user.openPrivateChannel().complete()
+        val pm: PrivateChannel = user.openPrivateChannel().complete()
         lateinit var builder: MessageAction
-        assert(pm != null)
-        builder = pm!!.sendMessage(message)
+        builder = pm.sendMessage(message)
         if(waitForComplete){
             builder.complete()
         }

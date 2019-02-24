@@ -1,7 +1,7 @@
 package maxdistructo.discord.core.jda.command
 
-import net.dv8tion.jda.core.entities.Message
-
+import com.jagrosh.jdautilities.command.Command
+import com.jagrosh.jdautilities.command.CommandEvent
 /**
  * @class DefaultCommand
  * @description A default implementations of ICommand used for GuildOwner and BotOwner commands.
@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.entities.Message
  */
  
 object DefaultCommand {
-    open class AdminCommand(name : String) : Command(){
+    abstract class AdminCommand(name : String) : Command(){
         init{
             this.name = name
             this.guildOnly = true
@@ -22,10 +22,10 @@ object DefaultCommand {
             this.guildOnly = false //This is a basic for input, return output.
         }
         override fun execute(event : CommandEvent){
-            event.reply(output).submit()
+            event.reply(output)
         }
     }
-    open class GameCommand(name : String, guildOnly : Boolean) : Command(){
+    abstract class GameCommand(name : String, guildOnly : Boolean) : Command(){
         init{
             this.name = name
             this.guildOnly = guildOnly

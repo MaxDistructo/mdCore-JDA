@@ -1,13 +1,11 @@
 package maxdistructo.discord.core.jda.impl
 
-import maxdistructo.discord.core.jda.obj.IPerms
 import maxdistructo.discord.core.jda.Utils
 import net.dv8tion.jda.core.entities.Guild
 import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.User
 import net.dv8tion.jda.core.entities.Message
 import org.json.JSONObject
-import org.json.JSONArray
 
 /**
  * @class Perms
@@ -17,28 +15,21 @@ import org.json.JSONArray
  */
 
 class Perms(fileSuffix : String, guild : Guild){
-    val jsonFile : JSONObject
-    val guildId : Long
-    
-    constructor(guild : Guild){
-        jsonFile = Utils.readJSONFromFile("/config/" + guild.idLong + "_perms.json")
-        guildId = guild.idLong
-    }
-    init{
-        jsonFile = Utils.readJSONFromFile("/config/" + guild.idLong + fileSuffix)
-        guildId = guild.idLong
-    }
+    constructor(guild : Guild) : this("_perms.json", guild)
+
+    val jsonFile : JSONObject = Utils.readJSONFromFile("/config/" + guild.idLong + fileSuffix)
+    val guildId : Long = guild.idLong
 
     val mods = Utils.toStringList(jsonFile.getJSONArray("mods"))
     val admins = Utils.toStringList(jsonFile.getJSONArray("admins"))
-    val owner = guild.getOwner.user.idLong
+    val owner = guild.owner.user.idLong
 
     //Default Permission Check Function
     fun checkMod(id : Long) : Boolean{
-        return mods.contains("" + id) || admins.contains("" + id) || id == owner
+        return mods!!.contains("" + id) || admins!!.contains("" + id) || id == owner
     }
     fun checkAdmin(id : Long) : Boolean{
-        return admins.contains("" + id) || id == owner
+        return admins!!.contains("" + id) || id == owner
     }
     fun checkOwner(id : Long) : Boolean{
         return id == owner
@@ -55,7 +46,7 @@ class Perms(fileSuffix : String, guild : Guild){
         return checkMod(message.author.idLong)
     }
     fun checkMod(idString : String) : Boolean{
-        return checkMod(Utils.convertToLong(idString))
+        return checkMod(Utils.convertToLong(idString)!!)
     }
     fun checkAdmin(user : User) : Boolean{
         return checkAdmin(user.idLong)
@@ -67,7 +58,7 @@ class Perms(fileSuffix : String, guild : Guild){
         return checkAdmin(message.author.idLong)
     }
     fun checkAdmin(idString : String) : Boolean{
-        return checkAdmin(Utils.convertToLong(idString))
+        return checkAdmin(Utils.convertToLong(idString)!!)
     }
     fun checkOwner(user : User) : Boolean{
         return checkOwner(user.idLong)
@@ -79,7 +70,7 @@ class Perms(fileSuffix : String, guild : Guild){
         return checkOwner(message.author.idLong)
     }
     fun checkOwner(idString : String) : Boolean{
-        return checkOwner(Utils.convertToLong(idString))
+        return checkOwner(Utils.convertToLong(idString)!!)
     }
 
 }
