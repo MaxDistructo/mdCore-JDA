@@ -10,13 +10,14 @@ buildscript {
 plugins {
   java
   idea
-  application
-  maven  
+    `java-library`
+    maven
 
   kotlin("jvm") version "1.3.21"
     //id "com.github.ben-manes.versions" version "0.20.0"
     //id 'com.sedmelluq.jdaction' version '1.0.2'
 }
+group = "com.gitlab.MaxDistructo"
 
 repositories {
   jcenter()
@@ -37,3 +38,14 @@ dependencies {
   compile (group = "net.dv8tion", name= "JDA", version = "3.8.3_460")
   compile (group = "com.jagrosh", name = "jda-utilities", version = "2.1.4")
 }
+
+tasks {
+    val copyToLib by registering(Copy::class) {
+        into("$buildDir/lib")
+        from(configurations.compile)
+    }
+    val stage by registering {
+        dependsOn("build", copyToLib)
+    }
+}
+
