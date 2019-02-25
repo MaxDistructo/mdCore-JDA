@@ -13,6 +13,8 @@ import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 import java.nio.file.Paths
+import java.util.stream.Collector
+import java.util.stream.Collectors
 
 object Utils {
     private val currentRelativePath = Paths.get("")
@@ -27,16 +29,7 @@ object Utils {
      */
     fun makeNewString(input: List<Any>, startAt: Int): String {
         val stringBuilder = StringBuilder()
-        var i = startAt
-        while (i < input.size) {
-            if (i - 1 == input.size) {
-                stringBuilder.append(input[i])
-            } else {
-                stringBuilder.append(input[i])
-                stringBuilder.append(" ")
-            }
-            i++
-        }
+        input.asReversed().dropLast(startAt - 1).asReversed().forEach { e -> stringBuilder.append(e) }
         return stringBuilder.toString()
     }
 
@@ -73,12 +66,9 @@ object Utils {
     fun toStringArray(array: JSONArray?): Array<String?>? {
         if (array == null)
             return null
-
-        val arr = arrayOfNulls<String>(array.length())
-        for (i in arr.indices) {
-            arr[i] = array.optString(i)
-        }
-        return arr
+        val outArray = arrayListOf<String?>()
+        array.toList().stream().forEach { e -> outArray.add(e as String) }
+        return outArray.toTypedArray()
     }
 
      /**
@@ -90,12 +80,9 @@ object Utils {
     fun toStringList(array: JSONArray?): List<String?>? {
         if (array == null)
             return null
-
-        var arr = listOf<String>()
-        for (i in arr.indices) {
-            arr += array.optString(i)
-        }
-        return arr
+         val outList = mutableListOf<String?>()
+         array.toList().stream().forEach { e -> outList.add(e as String) }
+         return outList
     }
 
     /**
@@ -168,12 +155,7 @@ object Utils {
 
     fun makeNewLineString(input: List<String?>, startAt: Int): String {
         val stringBuilder = StringBuilder()
-        var i = startAt
-        while (i < input.size) {
-            stringBuilder.append(input[i])
-            stringBuilder.append("\n")
-            i++
-        }
+        input.asReversed().dropLast(startAt - 1).asReversed().forEach { e -> stringBuilder.append(e) }
         return stringBuilder.toString()
     }
 

@@ -37,37 +37,19 @@ object Config {
     fun readServerModConfig(guild: Guild): List<Long> {
         val root = Utils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
         val array = root.getJSONArray("Moderators")
-        val longArray = LongArray(array.length())
-        var i = 0
-        while (i < longArray.size) {
-            longArray[i] = array.getLong(i)
-            i++
-        }
-        return longArray.toList()
+        return array.toList() as List<Long>
     }
 
     fun readServerAdminConfig(guild: Guild): List<Long> {
         val root = Utils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
         val array = root.getJSONArray("Admins")
-        val longArray = LongArray(array.length())
-        var i = 0
-        while (i < array.length()) {
-            longArray[i] = array.getLong(i)
-            i++
-        }
-        return longArray.toList()
+        return array.toList() as List<Long>
     }
 
     fun readServerGamesConfig(guild: Guild): List<String?> {
         val root = Utils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
         val array = root.getJSONArray("GameChannels")
-        var longArray = listOf<String>()
-        var i = 0
-        while (i < array.length()) {
-            longArray += array.getString(i)
-            i++
-        }
-        return longArray
+        return array.toMutableList() as List<String?>
     }
 
     @Deprecated("", ReplaceWith("Utils.readJSONFromFile(\"/config/guild/ + guild.idLong + \".txt\"", "maxdistructo.discord.core.jda.Utils" ))

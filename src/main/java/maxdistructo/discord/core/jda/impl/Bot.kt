@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.OnlineStatus
 import net.dv8tion.jda.core.entities.Game
+import net.dv8tion.jda.core.entities.ISnowflake
 import net.dv8tion.jda.core.hooks.ListenerAdapter
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -20,18 +21,19 @@ import java.util.*
  * @class Bot
  * Sets up a simple discord bot and logger. Any values that are needed to be taken out are avaliable.
  * @param token The private Discord Token for your bot.
- * @param ownerId The Debug ID of the bot owner.
  */
 
-class Bot(private val token : String, val ownerId : Long)  {
+class Bot(private val token: String) {
 
     private var listeners : LinkedList<ListenerAdapter> = LinkedList()
     private var commands : LinkedList<Command> = LinkedList()
+    private var coOwners: LinkedList<String> = LinkedList()
     private lateinit var privClient : JDA
     private var privName : String = ""
+    private var ownerId: String = ""
     private lateinit var privLogger : Logger
     private lateinit var privCommandClient : CommandClient
-    private var commandBuilder : CommandClientBuilder = CommandClientBuilder().useDefaultGame().setPrefix(Config.readPrefix()).setOwnerId("" + ownerId)
+    private lateinit var commandBuilder: CommandClientBuilder
 
     val commandAPI : CommandClient
         get() = privCommandClient
@@ -53,9 +55,19 @@ class Bot(private val token : String, val ownerId : Long)  {
         commands.add(command)
     }
     fun registerCommands(vararg commandsIn : Command){
-        for(command in commandsIn){
-            commands.add(command)
-        }
+        commands.addAll(commandsIn)
+    }
+
+    fun setOwnerId(id: String) {
+        ownerId = id
+    }
+
+    fun setOwnerId(id: Long) {
+        ownerId = "" + id
+    }
+
+    fun setOwnerId(snowflake: ISnowflake) {
+        ownerId = snowflake.id
     }
 
     /**
@@ -71,14 +83,15 @@ class Bot(private val token : String, val ownerId : Long)  {
         builder.setGame(Game.playing("Loading..."))
 
         //Command API Setup Code
+        commandBuilder = CommandClientBuilder().useDefaultGame().setPrefix(Config.readPrefix()).setOwnerId("" + ownerId)
         val waiter = EventWaiter()
-        addCommands() //Adds all registered commands to the CommandClient
+        commands.stream().forEach { commandBuilder.addCommands() } //Adds all registered commands to the CommandClient
         privCommandClient = commandBuilder.build() //Builds the CommandClient
         builder.addEventListener(waiter, commandAPI) //Adds the Command Listeners
 
         //Additional Listener Check
         if(listeners.isNotEmpty()){
-         registerListeners(builder)
+            listeners.stream().forEach { builder.addEventListener() }
         }
 
         //Actual Bot Login and Startup
@@ -90,17 +103,6 @@ class Bot(private val token : String, val ownerId : Long)  {
         Client.LOGGER = privLogger
 
         return this
-    }
-    private fun addCommands(){
-        for(command in commands){
-            commandBuilder.addCommand(command)
-        }
-    }
-    private fun registerListeners(builder : JDABuilder) : JDABuilder {
-        for (listener in listeners) {
-            builder.addEventListener(listener)
-        }
-        return builder
     }
 
 }

@@ -14,11 +14,14 @@ import java.util.*
  */
 
 object Messages {
-    var channel: PrivateChannel? = null
+
     fun simpleEmbed(user: Member, title: String, description: String, message: Message): MessageEmbed {
+        return simpleEmbed(user, title, description, message.guild)
+    }
+
+    fun simpleEmbed(user: Member, title: String, description: String, guild: Guild): MessageEmbed {
         val builder = EmbedBuilder()
         val authorAvatar = user.user.avatarUrl
-        val guild = message.guild
         val color = user.color
         val guildImage = guild.iconUrl
         val guildName = guild.name
@@ -31,9 +34,12 @@ object Messages {
         return builder.build()
     }
     fun simpleEmbed(user: Member, description: String, message: Message): MessageEmbed {
+        return simpleEmbed(user, description, message.guild)
+    }
+
+    fun simpleEmbed(user: Member, description: String, guild: Guild): MessageEmbed {
         val builder = EmbedBuilder()
         val authorAvatar = user.user.avatarUrl
-        val guild = message.guild
         val color = user.color
         val guildImage = guild.iconUrl
         val guildName = guild.name
@@ -70,7 +76,6 @@ object Messages {
         builder = pm!!.sendMessage(embed)
         return builder.complete(true)
     }
-
     fun sendDM(user: User, embed: MessageEmbed, waitForComplete : Boolean) {
         val pm: PrivateChannel? = user.openPrivateChannel().complete()
         lateinit var builder: MessageAction
@@ -82,6 +87,17 @@ object Messages {
         else{
             builder.submit()
         }
+    }
+
+    /**
+     * @function sendEmbedMessage
+     * @param channel : TextChannel
+     * @param content : String
+     *
+     * Wrapper function to send a string in a simple embed
+     */
+    fun sendEmbedMessage(channel: TextChannel, content: String, member: Member) {
+        sendMessage(channel, Messages.simpleEmbed(member, content, channel.guild))
     }
 
     fun sendMessage(channel: TextChannel, content: String): Message {
