@@ -10,14 +10,15 @@ import org.json.JSONObject
 /**
  * @class Perms
  * A simple permissions class. Does not use IPerms due to how JSONArrays hold values
+ * @param filePrefix The folder location relative to the Jar/Running Directory. Ex: /config/GuildID_perms.json has a prefix of /config/
  * @param fileSuffix The suffix of the file name. Ex: _perms.json is the suffix of GuildID_perms.json.
  * @param guild The guild this permissions object is tied to.
  */
 
-class Perms(fileSuffix : String, guild : Guild){
-    constructor(guild : Guild) : this("_perms.json", guild)
+class Perms(filePrefix: String, fileSuffix: String, guild: Guild) {
+    constructor(guild: Guild) : this("/config/", "_perms.json", guild)
 
-    val jsonFile : JSONObject = Utils.readJSONFromFile("/config/" + guild.idLong + fileSuffix)
+    val jsonFile: JSONObject = Utils.readJSONFromFile(filePrefix + guild.idLong + fileSuffix)
     val guildId : Long = guild.idLong
 
     val mods = Utils.toStringList(jsonFile.getJSONArray("mods"))
