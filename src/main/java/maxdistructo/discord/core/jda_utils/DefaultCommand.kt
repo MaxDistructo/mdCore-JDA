@@ -1,4 +1,4 @@
-package maxdistructo.discord.core.jda.command
+package maxdistructo.discord.core.jda_utils
 
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent

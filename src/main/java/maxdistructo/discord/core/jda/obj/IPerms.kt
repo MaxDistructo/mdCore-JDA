@@ -7,14 +7,14 @@ package maxdistructo.discord.core.jda.obj
  */
 
 interface IPerms {
-    var admins : List<Long>
-    var mods : List<Long>
+    var admins : MutableList<Long>
+    var mods : MutableList<Long>
     fun addAdmin(l : Long){
-        admins += l
-        mods += l
+        admins.add(l)
+        mods.add(l)
     }
     fun addMod(l : Long){
-        mods += l
+        mods.add(l)
     }
     fun checkAdmin(l : Long) : Boolean{
         return admins.contains(l)
