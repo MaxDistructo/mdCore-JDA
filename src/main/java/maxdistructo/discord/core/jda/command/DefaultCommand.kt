@@ -4,7 +4,7 @@ import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 /**
  * @class DefaultCommand
- * @description A default implementations of ICommand used for GuildOwner and BotOwner commands.
+ * @description Basic command setups of common command types I use.
  * @usage Extend a class, Override the commandName, helpMessage, hasOutput, and init(IMessage, List<String>) to create a simple command with these traits.
  */
  

@@ -1,12 +1,12 @@
 package maxdistructo.discord.core.jda
 
+import maxdistructo.discord.core.JSONUtils
+import maxdistructo.discord.core.Utils
 import maxdistructo.discord.core.jda.message.Messages
 import net.dv8tion.jda.core.entities.Guild
 import org.json.JSONObject
-import org.json.JSONTokener
 
 import java.io.File
-import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -24,40 +24,40 @@ object Config {
     }
 
     fun readToken(): String {
-        val root = Utils.readJSONFromFile("/config/config.txt")
+        val root = JSONUtils.readJSONFromFile("/config/config.txt")
         return root.getString("Token")
 
     }
 
     fun readPrefix(): String {
-        val root = Utils.readJSONFromFile("/config/config.txt")
+        val root = JSONUtils.readJSONFromFile("/config/config.txt")
         return root.getString("Prefix")
     }
 
     fun readServerModConfig(guild: Guild): List<Long> {
-        val root = Utils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
+        val root = JSONUtils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
         val array = root.getJSONArray("Moderators")
         return array.toList() as List<Long>
     }
 
     fun readServerAdminConfig(guild: Guild): List<Long> {
-        val root = Utils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
+        val root = JSONUtils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
         val array = root.getJSONArray("Admins")
         return array.toList() as List<Long>
     }
 
     fun readServerGamesConfig(guild: Guild): List<String?> {
-        val root = Utils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
+        val root = JSONUtils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
         val array = root.getJSONArray("GameChannels")
         return array.toMutableList() as List<String?>
     }
 
-    @Deprecated("", ReplaceWith("Utils.readJSONFromFile(\"/config/guild/ + guild.idLong + \".txt\"", "maxdistructo.discord.core.jda.Utils" ))
+    @Deprecated("", ReplaceWith("JSONUtils.readJSONFromFile(\"/config/guild/ + guild.idLong + \".txt\"", "maxdistructo.discord.core.Utils" ))
     fun readServerConfig(guild: Guild): JSONObject {
-        return Utils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
+        return JSONUtils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
     }
 
-    @Deprecated("", ReplaceWith("Utils.convertToLong(o)", "maxdistructo.discord.core.jda.Utils.convertToLong", "maxdistructo.discord.core.jda.Utils")) //Use Utils.convertToLong instead. This is here for legacy support.
+    @Deprecated("", ReplaceWith("Utils.convertToLong(o)", "maxdistructo.discord.core.Utils.convertToLong", "maxdistructo.discord.core.Utils")) //Use Utils.convertToLong instead. This is here for legacy support.
     fun convertToLong(o: Any): Long {
         return java.lang.Long.valueOf(o.toString())
     }
@@ -78,7 +78,7 @@ object Config {
         return config.getBoolean("debug")
     }
     fun readConfig() : JSONObject{
-        return Utils.readJSONFromFile("/config/config.txt")
+        return JSONUtils.readJSONFromFile("/config/config.txt")
     }
 }
 

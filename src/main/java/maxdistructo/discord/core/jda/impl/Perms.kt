@@ -1,6 +1,7 @@
 package maxdistructo.discord.core.jda.impl
 
-import maxdistructo.discord.core.jda.Utils
+import maxdistructo.discord.core.JSONUtils
+import maxdistructo.discord.core.Utils
 import net.dv8tion.jda.core.entities.Guild
 import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.User
@@ -18,11 +19,11 @@ import org.json.JSONObject
 class Perms(filePrefix: String, fileSuffix: String, guild: Guild) {
     constructor(guild: Guild) : this("/config/", "_perms.json", guild)
 
-    val jsonFile: JSONObject = Utils.readJSONFromFile(filePrefix + guild.idLong + fileSuffix)
+    val jsonFile: JSONObject = JSONUtils.readJSONFromFile(filePrefix + guild.idLong + fileSuffix)
     val guildId : Long = guild.idLong
 
-    val mods = Utils.toStringList(jsonFile.getJSONArray("mods"))
-    val admins = Utils.toStringList(jsonFile.getJSONArray("admins"))
+    val mods = JSONUtils.toStringList(jsonFile.getJSONArray("mods"))
+    val admins = JSONUtils.toStringList(jsonFile.getJSONArray("admins"))
     val owner = guild.owner.user.idLong
 
     //Default Permission Check Function
