@@ -1,4 +1,7 @@
 package maxdistructo.discord.core.jda_utils
+object DefaultCommand {} //Holder for later updates
+/**
+package maxdistructo.discord.core.jda_utils
 
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
@@ -32,3 +35,4 @@ object DefaultCommand {
         }
     }
 }
+ **/

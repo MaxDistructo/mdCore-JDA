@@ -1,10 +1,10 @@
 package maxdistructo.discord.core.jda
 
 import maxdistructo.discord.core.Utils
-import net.dv8tion.jda.core.entities.Channel
-import net.dv8tion.jda.core.entities.Member
-import net.dv8tion.jda.core.entities.Message
-import net.dv8tion.jda.core.entities.User
+import net.dv8tion.jda.api.entities.GuildChannel
+import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.entities.User
 
 object JDAUtils {
     /**
@@ -13,7 +13,7 @@ object JDAUtils {
      *   @return The mentioned channel or null if impossible
      */
 
-    fun getMentionedChannel(message: Message): Channel? {
+    fun getMentionedChannel(message: Message): GuildChannel? {
         val mentionedChannelList = message.mentionedChannels
         val mentionedChannelArray = mentionedChannelList.toTypedArray()
         return if (mentionedChannelArray.isNotEmpty()) {

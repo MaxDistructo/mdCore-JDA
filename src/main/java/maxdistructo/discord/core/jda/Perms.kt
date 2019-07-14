@@ -1,8 +1,8 @@
 package maxdistructo.discord.core.jda
 
 import maxdistructo.discord.core.jda.Client.client
-import net.dv8tion.jda.core.Permission
-import net.dv8tion.jda.core.entities.*
+import net.dv8tion.jda.api.Permission
+import net.dv8tion.jda.api.entities.*
 
 /**
  * @object Perms
@@ -42,12 +42,12 @@ object Perms{
     fun checkOwner_Guild(message: Message): Boolean {
         val author = message.author
 
-        return author.idLong == message.guild.owner.user.idLong || checkOwner(message)
+        return author.idLong == message.guild.owner!!.user.idLong || checkOwner(message)
     }
 
     fun checkOwner(message: Message): Boolean {
         val author = message.author
-        return author.idLong == client!!.asBot().applicationInfo.complete().owner.idLong
+        return author.idLong == Client.getApplicationInfo().owner.idLong
     }
 
     fun checkGames(message: Message): Boolean {
@@ -66,6 +66,6 @@ object Perms{
     }
 
     fun checkForPermission(message: Message, permission: Permission): Boolean {
-        return message.member.hasPermission(permission)
+        return message.member!!.hasPermission(permission)
     }
 }

@@ -2,10 +2,10 @@ package maxdistructo.discord.core.jda.impl
 
 import maxdistructo.discord.core.JSONUtils
 import maxdistructo.discord.core.Utils
-import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.Member
-import net.dv8tion.jda.core.entities.User
-import net.dv8tion.jda.core.entities.Message
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.User
+import net.dv8tion.jda.api.entities.Message
 import org.json.JSONObject
 
 /**
@@ -24,7 +24,7 @@ class Perms(filePrefix: String, fileSuffix: String, guild: Guild) {
 
     val mods = JSONUtils.toStringList(jsonFile.getJSONArray("mods"))
     val admins = JSONUtils.toStringList(jsonFile.getJSONArray("admins"))
-    val owner = guild.owner.user.idLong
+    val owner = guild.owner!!.user.idLong
 
     //Default Permission Check Function
     fun checkMod(id : Long) : Boolean{

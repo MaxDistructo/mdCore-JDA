@@ -1,9 +1,8 @@
 package maxdistructo.discord.core.jda
 
 import maxdistructo.discord.core.JSONUtils
-import maxdistructo.discord.core.Utils
 import maxdistructo.discord.core.jda.message.Messages
-import net.dv8tion.jda.core.entities.Guild
+import net.dv8tion.jda.api.entities.Guild
 import org.json.JSONObject
 
 import java.io.File

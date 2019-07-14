@@ -1,19 +1,19 @@
 package maxdistructo.discord.core.jda.impl
 
 import ch.qos.logback.classic.Logger
-import com.jagrosh.jdautilities.command.Command
-import com.jagrosh.jdautilities.command.CommandClient
-import com.jagrosh.jdautilities.command.CommandClientBuilder
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter
+//import com.jagrosh.jdautilities.command.Command
+//import com.jagrosh.jdautilities.command.CommandClient
+//import com.jagrosh.jdautilities.command.CommandClientBuilder
+//import com.jagrosh.jdautilities.commons.waiter.EventWaiter
 import maxdistructo.discord.core.jda.Client
 import maxdistructo.discord.core.jda.Config
-import net.dv8tion.jda.core.AccountType
-import net.dv8tion.jda.core.JDA
-import net.dv8tion.jda.core.JDABuilder
-import net.dv8tion.jda.core.OnlineStatus
-import net.dv8tion.jda.core.entities.Game
-import net.dv8tion.jda.core.entities.ISnowflake
-import net.dv8tion.jda.core.hooks.ListenerAdapter
+import net.dv8tion.jda.api.AccountType
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.OnlineStatus
+import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.entities.ISnowflake
+import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -26,17 +26,17 @@ import java.util.*
 class Bot(private val token: String) {
 
     private var listeners : LinkedList<ListenerAdapter> = LinkedList()
-    private var commands : LinkedList<Command> = LinkedList()
+    //private var commands : LinkedList<Command> = LinkedList()
     private var coOwners: LinkedList<String> = LinkedList()
     private lateinit var privClient : JDA
     private var privName : String = ""
     private var ownerId: String = ""
     private lateinit var privLogger : Logger
-    private lateinit var privCommandClient : CommandClient
-    private lateinit var commandBuilder: CommandClientBuilder
+    //private lateinit var privCommandClient : CommandClient
+    //private lateinit var commandBuilder: CommandClientBuilder
 
-    val commandAPI : CommandClient
-        get() = privCommandClient
+    //val commandAPI : CommandClient
+    //    get() = privCommandClient
 
     val client: JDA
         get() = privClient
@@ -51,12 +51,12 @@ class Bot(private val token: String) {
             listeners.add(listener)
         }
     }
-    fun registerCommand(command : Command){
-        commands.add(command)
-    }
-    fun registerCommands(vararg commandsIn : Command){
-        commands.addAll(commandsIn)
-    }
+   // fun registerCommand(command : Command){
+   //     commands.add(command)
+   // }
+   // fun registerCommands(vararg commandsIn : Command){
+   //     commands.addAll(commandsIn)
+   // }
 
     fun setOwnerId(id: String) {
         ownerId = id
@@ -80,18 +80,17 @@ class Bot(private val token: String) {
         val builder = JDABuilder(AccountType.BOT)
         builder.setToken(token)
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB)
-        builder.setGame(Game.playing("Loading..."))
-
+        builder.setActivity(Activity.playing("Loading...."))
         //Command API Setup Code
-        commandBuilder = CommandClientBuilder().useDefaultGame().setPrefix(Config.readPrefix()).setOwnerId("" + ownerId)
+       /** commandBuilder = CommandClientBuilder().useDefaultGame().setPrefix(Config.readPrefix()).setOwnerId("" + ownerId)
         val waiter = EventWaiter()
         commands.stream().forEach { commandBuilder.addCommands() } //Adds all registered commands to the CommandClient
         privCommandClient = commandBuilder.build() //Builds the CommandClient
         builder.addEventListener(waiter, commandAPI) //Adds the Command Listeners
-
+        **/
         //Additional Listener Check
         if(listeners.isNotEmpty()){
-            listeners.stream().forEach { builder.addEventListener() }
+            listeners.stream().forEach { builder.addEventListeners() }
         }
 
         //Actual Bot Login and Startup

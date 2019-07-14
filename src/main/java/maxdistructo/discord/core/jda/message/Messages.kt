@@ -1,9 +1,9 @@
 package maxdistructo.discord.core.jda.message
 
 import maxdistructo.discord.core.jda.Client
-import net.dv8tion.jda.core.EmbedBuilder
-import net.dv8tion.jda.core.entities.*
-import net.dv8tion.jda.core.requests.restaction.MessageAction
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.*
+import net.dv8tion.jda.api.requests.restaction.MessageAction
 import java.time.Instant
 import java.util.*
 
@@ -145,11 +145,11 @@ object Messages {
     }
 
     fun throwError(e: Exception) {
-        sendDM(Client.client!!.asBot().applicationInfo.complete().owner, e.toString() + "\n" + Arrays.toString(e.stackTrace)) //General Support
+        sendDM(Client.client!!.retrieveApplicationInfo().complete().owner, e.toString() + "\n" + Arrays.toString(e.stackTrace)) //General Support
     }
 
     fun throwError(e: Exception, message: Message) {
-        sendDM(Client.client!!.asBot().applicationInfo.complete().owner, message.guild.name + "'s #" + message.channel.name + " has thrown " + e.toString() + "\n" + Arrays.toString(e.stackTrace)) //General Support
+        sendDM(Client.client!!.retrieveApplicationInfo().complete().owner, message.guild.name + "'s #" + message.channel.name + " has thrown " + e.toString() + "\n" + Arrays.toString(e.stackTrace)) //General Support
     }
 }
 

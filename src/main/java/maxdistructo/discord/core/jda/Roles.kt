@@ -1,7 +1,7 @@
 package maxdistructo.discord.core.jda
 
 import maxdistructo.discord.core.jda.message.Messages
-import net.dv8tion.jda.core.entities.*
+import net.dv8tion.jda.api.entities.*
 import java.awt.Color
 
 /**
@@ -68,7 +68,7 @@ object Roles {
             Messages.sendMessage(message.channel, "The role $roleL was not found.")
             Thread.interrupted()
         }
-        mentioned.guild.controller.addSingleRoleToMember(mentioned, role).complete(true)
+        mentioned.guild.addRoleToMember(mentioned, role!!).complete(true)
     }
 
     fun applyRole(guild : Guild, user : User, roleName : String){
@@ -76,8 +76,8 @@ object Roles {
         if (roleList.isEmpty()) {
             Thread.interrupted()
         }
-        if (!roleList.isEmpty()) {
-            guild.controller.addSingleRoleToMember(guild.getMember(user), roleList[0]).complete(true)
+        if (roleList.isNotEmpty()) {
+            guild.addRoleToMember(guild.getMember(user)!!, roleList[0]).complete(true)
         }
     }
 
@@ -109,7 +109,7 @@ object Roles {
      */
 
     fun makeNewRole(guild: Guild, roleName: String, hoist: Boolean, mentionable: Boolean): Role {
-        val rb = guild.controller.createRole()
+        val rb = guild.createRole()
         rb.setName(roleName)
         rb.setHoisted(hoist)
         rb.setMentionable(mentionable)

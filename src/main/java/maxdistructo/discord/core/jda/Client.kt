@@ -1,6 +1,7 @@
 package maxdistructo.discord.core.jda
 
-import net.dv8tion.jda.core.JDA
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.entities.ApplicationInfo
 import org.slf4j.Logger
 
 /**
@@ -12,4 +13,8 @@ import org.slf4j.Logger
 internal object Client {
     var client: JDA? = null
     var LOGGER : Logger? = null
+    private val applicationInfo : ApplicationInfo? = null
+    fun getApplicationInfo() : ApplicationInfo {
+        return applicationInfo ?: client!!.retrieveApplicationInfo().complete()
+    }
 }

@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     repositories {
         mavenCentral()
@@ -6,7 +9,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41")
     }
 }
-
 plugins {
   java
   idea
@@ -35,11 +37,17 @@ dependencies {
   compile (group= "org.json", name= "json", version="20180813")
   compile (group= "commons-io", name= "commons-io", version="2.6")
   compile (group= "ch.qos.logback", name= "logback-classic", version="1.2.3")
-  compile (group = "net.dv8tion", name= "JDA", version = "3.8.3_460")
-  compile (group = "com.jagrosh", name = "jda-utilities", version = "2.1.5")
+  compile (group = "net.dv8tion", name= "JDA", version = "4.BETA.0_22")
+  compile (group = "club.minnced", name= "discord-webhooks", version= "0.1.7")
+  //compile (group = "com.jagrosh", name = "jda-utilities", version = "2.1.5")
 }
 
 tasks {
+    withType<KotlinCompile> {
+        (kotlinOptions).apply {
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
+    }
     val copyToLib by registering(Copy::class) {
         into("$buildDir/lib")
         from(configurations.compile)
