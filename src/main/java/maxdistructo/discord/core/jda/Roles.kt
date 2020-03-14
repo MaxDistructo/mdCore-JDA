@@ -17,6 +17,7 @@ object Roles {
      * Attempts to get a role based on the role name provided
      * @param message The message from the guild you wish to get a role from
      * @param role The name of the role to get. Is not case sensitive
+     * See getRole(guild, role) for detailed info
      */
     fun getRole(message: Message, role: String): Role? {
         return getRole(message.guild, role)
@@ -27,6 +28,7 @@ object Roles {
      * Attempts to get a role based on the role name provided
      * @param guild The guild you wish to get a role from
      * @param role The name of the role to get. Is not case sensitive
+     * @return The role requested if found or Null if unable to find.
      */
     fun getRole(guild : Guild, role : String) : Role?{
         val roles = guild.getRolesByName(role, true)
@@ -106,6 +108,7 @@ object Roles {
     /**
      * Function makeNewRole
      * Makes a new role in the provided guild.
+     * @return The role that was created.
      */
 
     fun makeNewRole(guild: Guild, roleName: String, hoist: Boolean, mentionable: Boolean): Role {
