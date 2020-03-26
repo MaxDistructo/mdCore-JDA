@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="mdCore-JDA.main" target="11" />
-      <module name="mdCore-JDA.test" target="11" />
+      <module name="mdCore-JDA.main" target="1.8" />
+      <module name="mdCore-JDA.test" target="1.8" />
       <module name="mdCore-JDA_main" target="1.8" />
       <module name="mdCore-JDA_test" target="1.8" />
     </bytecodeTargetLevel>

@@ -84,13 +84,13 @@ class Bot(private val token: String) {
         //Command API Setup Code
         commandBuilder = CommandClientBuilder().useDefaultGame().setPrefix(Config.readPrefix()).setOwnerId("" + ownerId)
         val waiter = EventWaiter()
-        commands.stream().forEach { commandBuilder.addCommands() } //Adds all registered commands to the CommandClient
+        commands.stream().forEach { command -> commandBuilder.addCommands(command) } //Adds all registered commands to the CommandClient
         privCommandClient = commandBuilder.build() //Builds the CommandClient
         builder.addEventListeners(waiter, commandAPI) //Adds the Command Listeners
 
         //Additional Listener Check
         if(listeners.isNotEmpty()){
-            listeners.stream().forEach { builder.addEventListeners() }
+            listeners.stream().forEach { listener -> builder.addEventListeners(listener) }
         }
 
         //Actual Bot Login and Startup

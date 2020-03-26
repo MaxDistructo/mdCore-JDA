@@ -39,7 +39,7 @@ dependencies {
   compile (group= "ch.qos.logback", name= "logback-classic", version="1.2.3")
   compile (group = "net.dv8tion", name= "JDA", version = "4.1.1_101")
   compile (group = "club.minnced", name= "discord-webhooks", version= "0.2.0")
-  compile (group = "com.jagrosh", name = "jda-utilities", version = "3.0.2")
+  compile (group = "com.jagrosh", name = "jda-utilities", version = "3.0.3")
 }
 
 tasks {

@@ -2,10 +2,12 @@
   <library name="Gradle: net.dv8tion:JDA:4.1.1_101">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/5.2.1/caches/modules-2/files-2.1/net.dv8tion/JDA/4.1.1_101/6f26dec69ff0af77e0b3b64b1e3e83bb5bf188b1/JDA-4.1.1_101.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.dv8tion/JDA/4.1.1_101/6f26dec69ff0af77e0b3b64b1e3e83bb5bf188b1/JDA-4.1.1_101.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$USER_HOME$/.gradle/caches/5.2.1/caches/modules-2/files-2.1/net.dv8tion/JDA/4.1.1_101/f5bb7f75b3da90ba9ffa37149d1fc790c7b5f011/JDA-4.1.1_101-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.dv8tion/JDA/4.1.1_101/f5bb7f75b3da90ba9ffa37149d1fc790c7b5f011/JDA-4.1.1_101-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
