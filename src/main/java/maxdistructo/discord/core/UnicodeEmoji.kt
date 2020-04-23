@@ -1,4 +1,4 @@
-package maxdistructo.discord.core.jda
+package maxdistructo.discord.core
 
 
 /**

@@ -26,10 +26,10 @@ object JSONUtils {
      *   @param array The JSON array to convert to String
      *   @return The list or null if the convert is impossible or fails
      */
-    fun toStringList(array: JSONArray?): List<String?>? {
+    fun toStringList(array: JSONArray?): List<String>? {
         if (array == null)
             return null
-        val outList = mutableListOf<String?>()
+        val outList = mutableListOf<String>()
         array.toList().stream().forEach { e -> outList.add(e as String) }
         return outList
     }
@@ -44,10 +44,11 @@ object JSONUtils {
         if(!file.exists()){
             createNewJSONFile(fileName)
         }
-        val uri = file.toURI()
+
+        val url = file.toURI().toURL()
         var tokener: JSONTokener? = null
         try {
-            tokener = JSONTokener(uri.toURL().openStream())
+            tokener = JSONTokener(url.openStream())
         } catch (e: IOException) {
             Messages.throwError(e)
             e.printStackTrace()
@@ -92,5 +93,31 @@ object JSONUtils {
         val file = File(Constants.s + path)
         file.createNewFile()
         writeJSONToFile(path, JSONObject())
+    }
+
+    /**
+     * Shuffles the provided JSONArray
+     * @param jsonArray The array to shuffle
+     * @return The shuffled array
+     */
+
+    fun shuffleJSONArray(jsonArray: JSONArray): JSONArray {
+        val list: MutableList<String> = mutableListOf()
+        list.addAll(toStringList(jsonArray) as Collection<String>)
+        list.shuffle()
+        return toJSONArray(list)
+    }
+
+    /**
+     * Converts a Collection into a JSONArray. Primarily used with lists
+     * @param list The collection to convert
+     * @return JSONArray of the collection
+     */
+    fun toJSONArray(list: Collection<String>): JSONArray{
+        val jsonArray = JSONArray()
+        for(value in list){
+            jsonArray.put(value)
+        }
+        return jsonArray
     }
 }

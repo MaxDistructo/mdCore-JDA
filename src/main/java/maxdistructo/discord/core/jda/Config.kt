@@ -51,7 +51,7 @@ object Config {
         return array.toMutableList() as List<String?>
     }
 
-    @Deprecated("", ReplaceWith("JSONUtils.readJSONFromFile(\"/config/guild/ + guild.idLong + \".txt\"", "maxdistructo.discord.core.Utils" ))
+    @Deprecated("", ReplaceWith("JSONUtils.readJSONFromFile(\"/config/guild/ + guild.idLong + \".txt\"", "maxdistructo.discord.core.JSONUtils" ))
     fun readServerConfig(guild: Guild): JSONObject {
         return JSONUtils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
     }

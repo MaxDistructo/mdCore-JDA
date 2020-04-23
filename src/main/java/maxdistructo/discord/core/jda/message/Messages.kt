@@ -15,11 +15,11 @@ import java.util.*
 
 object Messages {
 
-    fun simpleEmbed(user: Member, title: String, description: String, message: Message): MessageEmbed {
-        return simpleEmbed(user, title, description, message.guild)
+    fun simpleTitledEmbed(user: Member, title: String, description: String, message: Message): MessageEmbed {
+        return simpleTitledEmbed(user, title, description, message.guild)
     }
 
-    fun simpleEmbed(user: Member, title: String, description: String, guild: Guild): MessageEmbed {
+    fun simpleTitledEmbed(user: Member, title: String, description: String, guild: Guild): MessageEmbed {
         val builder = EmbedBuilder()
         val authorAvatar = user.user.avatarUrl
         val color = user.color
@@ -33,6 +33,7 @@ object Messages {
         builder.setColor(color)
         return builder.build()
     }
+
     fun simpleEmbed(user: Member, description: String, message: Message): MessageEmbed {
         return simpleEmbed(user, description, message.guild)
     }
@@ -50,42 +51,45 @@ object Messages {
         builder.setColor(color)
         return builder.build()
     }
-    fun sendDM(user: User, message: String): Message {
-        val pm: PrivateChannel =  user.openPrivateChannel().complete()
-        lateinit var builder: MessageAction
-        builder = pm.sendMessage(message)
-        return builder.complete(true)
+
+    fun sendDM(member: Member, message: String): Message{
+        return sendDM(member.user, message);
     }
 
-    fun sendDM(user: User, message: String, waitForComplete: Boolean) {
+    fun sendDM(user: User, message: String): Message {
+        return sendDM(user, message, true)
+    }
+
+    fun sendDM(user: User, message: String, waitForComplete: Boolean) : Message {
         val pm: PrivateChannel = user.openPrivateChannel().complete()
         lateinit var builder: MessageAction
         builder = pm.sendMessage(message)
-        if(waitForComplete){
-            builder.complete()
+        return if(waitForComplete){
+            builder.complete(true)
         }
         else{
-            builder.submit()
+            builder.submit().get()
         }
     }
 
-    fun sendDM(user: User, embed: MessageEmbed): Message {
-        val pm: PrivateChannel? = user.openPrivateChannel().complete()
-        lateinit var builder: MessageAction
-        assert(pm != null)
-        builder = pm!!.sendMessage(embed)
-        return builder.complete(true)
+    fun sendDM(member: Member, embed: MessageEmbed): Message{
+        return sendDM(member.user, embed)
     }
-    fun sendDM(user: User, embed: MessageEmbed, waitForComplete : Boolean) {
+
+    fun sendDM(user: User, embed: MessageEmbed): Message {
+        return sendDM(user, embed, true)
+    }
+
+    fun sendDM(user: User, embed: MessageEmbed, waitForComplete : Boolean) : Message {
         val pm: PrivateChannel? = user.openPrivateChannel().complete()
         lateinit var builder: MessageAction
         assert(pm != null)
         builder = pm!!.sendMessage(embed)
-        if(waitForComplete){
-            builder.complete()
+        return if(waitForComplete){
+            builder.complete(true)
         }
         else{
-            builder.submit()
+            builder.submit().get()
         }
     }
 

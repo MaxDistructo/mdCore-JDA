@@ -52,5 +52,22 @@ object Utils {
         input.asReversed().dropLast(startAt - 1).asReversed().forEach { e -> stringBuilder.append(e) }
         return stringBuilder.toString()
     }
+    //TODO(DOCUMENT THESE!!)
+    fun arrayToList(array : Array<String>) : List<String> {
+        val output : MutableList<String> = mutableListOf()
+        for(value in array){
+            output += value
+        }
+        return output
+    }
+
+    fun listToArray(list : List<String>) : Array<String>{
+        val output : ArrayList<String> = arrayListOf()
+        for(value in list){
+            output.add(value)
+        }
+        return output.toTypedArray()
+    }
+
 
 }
