@@ -4,7 +4,7 @@ package maxdistructo.discord.core.jda.message
  * @object Webhook
  * @description Contains methods to send webhook messages to Discord.
  * @author MaxDistructo
- * @license Copyright 2018-19 - MaxDistructo
+ * @license Copyright 2018-2020 - MaxDistructo
  */
 
 import club.minnced.discord.webhook.WebhookClient
@@ -24,6 +24,7 @@ object Webhook {
         try {
             val url = URL(avatar)
             val connection = url.openConnection()
+            //Have to set a UA to download avatars from even Discord itself.
             val userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0"
             connection.setRequestProperty("User-Agent", userAgent)
             webhook.manager.setName(name).setAvatar(Icon.from(connection.getInputStream())).complete(true)

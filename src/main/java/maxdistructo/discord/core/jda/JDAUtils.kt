@@ -113,4 +113,17 @@ object JDAUtils {
         }
         return null
     }
+
+    /**
+     * Converts a list of Members into a list of their display names
+     * @param c The list of members to convert to name list
+     * @return List<String> of member names
+     */
+    fun memberArrayToDisplayName(c : List<Member>) : List<String>{
+        var output = listOf<String>()
+        for(user in c){
+            output += user.effectiveName
+        }
+        return output
+    }
 }
