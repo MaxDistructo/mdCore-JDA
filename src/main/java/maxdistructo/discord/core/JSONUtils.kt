@@ -42,7 +42,7 @@ object JSONUtils {
     fun readJSONFromFile(fileName: String): JSONObject {
         val file = File(Constants.s + fileName)
         if(!file.exists()){
-            createNewJSONFile(fileName)
+            createNewJSONFile(Constants.s + fileName)
         }
 
         val url = file.toURI().toURL()
@@ -91,7 +91,13 @@ object JSONUtils {
      */
     fun createNewJSONFile(path : String){
         val file = File(Constants.s + path)
-        file.createNewFile()
+        try {
+            file.createNewFile()
+        }
+        catch(e : IOException){
+            println("Attempted to create file: $path")
+            println(e.stackTrace)
+        }
         writeJSONToFile(path, JSONObject())
     }
 

@@ -5,8 +5,11 @@ import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandClient
 import com.jagrosh.jdautilities.command.CommandClientBuilder
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter
+import maxdistructo.discord.core.Utils
 import maxdistructo.discord.core.jda.Client
 import maxdistructo.discord.core.jda.Config
+import maxdistructo.discord.core.jda_utils.BlacklistCommandListener
+import maxdistructo.discord.core.jda_utils.Blacklisting
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.OnlineStatus
@@ -92,10 +95,13 @@ class Bot(private var token: String, private var prefix: String, private var own
         val builder = if(intents.isEmpty()){JDABuilder.createDefault(token)}else{JDABuilder.create(intents)}
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB)
         builder.setActivity(Activity.playing("Loading...."))
+
         //Command API Setup Code
         commandBuilder = CommandClientBuilder().useDefaultGame().setPrefix(prefix).setOwnerId("" + ownerId)
         val waiter = EventWaiter()
         commands.stream().forEach { command -> commandBuilder.addCommands(command) } //Adds all registered commands to the CommandClient
+        commandBuilder.setListener(BlacklistCommandListener(Utils.convertToLong(ownerId)!!))
+        commandBuilder.addCommands(Blacklisting.CommandBan(), Blacklisting.CommandUnban())
         privCommandClient = commandBuilder.build() //Builds the CommandClient
         builder.addEventListeners(waiter, commandAPI) //Adds the Command Listeners
 

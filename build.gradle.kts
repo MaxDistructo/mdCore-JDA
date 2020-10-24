@@ -37,8 +37,8 @@ dependencies {
   compile (group= "org.json", name= "json", version="20200518")
   compile (group= "commons-io", name= "commons-io", version="2.7")
   compile (group= "ch.qos.logback", name= "logback-classic", version="1.2.3")
-  compile (group = "net.dv8tion", name= "JDA", version = "4.2.0_173")
-  compile (group = "club.minnced", name= "discord-webhooks", version= "0.3.1")
+  compile (group = "net.dv8tion", name= "JDA", version = "4.2.0_210")
+  compile (group = "club.minnced", name= "discord-webhooks", version= "0.5.0")
   compile (group = "com.jagrosh", name = "jda-utilities", version = "3.0.4")
 }
 
