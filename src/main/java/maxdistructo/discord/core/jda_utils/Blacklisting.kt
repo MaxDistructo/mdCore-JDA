@@ -21,18 +21,25 @@ object Blacklisting {
             val mentioned = JDAUtils.getMentionedUser(event.message)
             //command, mention, interpret
             val split = content.split(" ")
-            if(split[2].contains("d") || split[2].contains("h") || split[2].contains("m") || split[2].contains("s")){
-                val days = Utils.convertToInt(split[2].split("d")[0].replace(",",""))
-                val hours = Utils.convertToInt(split[2].split("d")[1].split("h")[0].replace(",",""))
-                val minutes = Utils.convertToInt(split[2].split("d")[1].split("h")[1].split("m")[0].replace(",",""))
-                val seconds = Utils.convertToInt(split[2].split("d")[1].split("h")[1].split("m")[1].replace("s", "").replace(",",""))
-                Blacklist.banUser(mentioned!!.idLong, days, hours, minutes, seconds)
+            if(split.size > 2) {
+                if (split[2].contains("d") || split[2].contains("h") || split[2].contains("m") || split[2].contains("s")) {
+                    val days = Utils.convertToInt(split[2].split("d")[0].replace(",", ""))
+                    val hours = Utils.convertToInt(split[2].split("d")[1].split("h")[0].replace(",", ""))
+                    val minutes = Utils.convertToInt(split[2].split("d")[1].split("h")[1].split("m")[0].replace(",", ""))
+                    val seconds = Utils.convertToInt(split[2].split("d")[1].split("h")[1].split("m")[1].replace("s", "").replace(",", ""))
+                    Blacklist.banUser(mentioned!!.idLong, days, hours, minutes, seconds)
+                } else {
+                    val month = Utils.convertToInt(split[2].split(",")[0])
+                    val day = Utils.convertToInt(split[2].split(",")[1])
+                    val year = Utils.convertToInt(split[2].split(",")[2])
+                    Blacklist.banUser(mentioned!!.idLong, GregorianCalendar(year, month - 1, day))
+                }
+                event.reply("User ${mentioned.asMention} has been banned from using ${event.jda.selfUser.asMention}")
             }
+
             else{
-                val month = Utils.convertToInt(split[2].split(",")[0])
-                val day = Utils.convertToInt(split[2].split(",")[1])
-                val year = Utils.convertToInt(split[2].split(",")[2])
-                Blacklist.banUser(mentioned!!.idLong, GregorianCalendar(year, month - 1, day))
+                Blacklist.banUser(mentioned!!.idLong)
+                event.reply("User: ${mentioned.asMention} has been permanently banned from using ${event.jda.selfUser.asMention}")
             }
         }
 
@@ -45,7 +52,9 @@ object Blacklisting {
             this.ownerCommand = true
         }
         override fun execute(event: CommandEvent?) {
-            Blacklist.unbanUser(JDAUtils.getMentionedUser(event!!.message)!!.idLong)
+            val mentioned = JDAUtils.getMentionedUser(event!!.message)!!
+            Blacklist.unbanUser(mentioned.idLong)
+            event.reply("User: ${mentioned.asMention} has been unbanned.")
         }
     }
 }
