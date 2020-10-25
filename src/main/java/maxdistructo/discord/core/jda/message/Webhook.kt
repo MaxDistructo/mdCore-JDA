@@ -88,17 +88,9 @@ object Webhook {
         return channel.createWebhook("bot").setAvatar(Icon.from(URL("https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1200px-Icon-round-Question_mark.svg.png").openStream())).setName("bot").complete(true)
     }
 
-    //TODO("Finish writing out this converter.")
     private fun messageEmbedToWebhookEmbed(embed : MessageEmbed) : WebhookEmbed {
-        val builder = WebhookEmbedBuilder()
-        when {
-            embed.isEmpty -> return builder.build()
-            embed.author != null -> builder.setAuthor(WebhookEmbed.EmbedAuthor(embed.author!!.name!!,embed.author!!.iconUrl, embed.author!!.url))
-            embed.color != null -> builder.setColor(embed.colorRaw)
-            embed.timestamp != null -> builder.setTimestamp(embed.timestamp)
-        }
+        val builder = WebhookEmbedBuilder.fromJDA(embed) //THANK YOU LIBRARY!!!!
         return builder.build()
-
     }
 
 }
