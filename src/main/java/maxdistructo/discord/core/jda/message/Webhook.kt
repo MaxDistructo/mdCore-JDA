@@ -84,7 +84,8 @@ object Webhook {
                 return webhook
             }
         }
-        return channel.createWebhook("bot").setAvatar(Icon.from(URL("https://www.shareicon.net/download/128x128//2017/06/21/887435_logo_512x512.png").openStream())).setName("bot").complete(true)
+        //10/24/2020 - The old default icon no longer exists. F
+        return channel.createWebhook("bot").setAvatar(Icon.from(URL("https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1200px-Icon-round-Question_mark.svg.png").openStream())).setName("bot").complete(true)
     }
 
     //TODO("Finish writing out this converter.")
