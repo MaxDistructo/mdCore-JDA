@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30")
     }
 }
 plugins {
@@ -15,7 +15,7 @@ plugins {
     `java-library`
     maven
 
-  kotlin("jvm") version "1.3.72"
+  kotlin("jvm") version "1.4.30"
     //id "com.github.ben-manes.versions" version "0.20.0"
     //id 'com.sedmelluq.jdaction' version '1.0.2'
 }
@@ -32,13 +32,13 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-  compile (group= "org.jetbrains.kotlin", name= "kotlin-stdlib-jdk8", version="1.3.72")
+  compile (group= "org.jetbrains.kotlin", name= "kotlin-stdlib", version="1.4.30")
   compile (group= "org.jetbrains.kotlinx", name= "kotlinx-coroutines-core", version="1.3.7")
   compile (group= "org.json", name= "json", version="20200518")
   compile (group= "commons-io", name= "commons-io", version="2.7")
   compile (group= "ch.qos.logback", name= "logback-classic", version="1.2.3")
-  compile (group = "net.dv8tion", name= "JDA", version = "4.2.0_210")
-  compile (group = "club.minnced", name= "discord-webhooks", version= "0.5.0")
+  compile (group = "net.dv8tion", name= "JDA", version = "4.2.0_228")
+  compile (group = "club.minnced", name= "discord-webhooks", version= "0.5.5-rc")
   compile (group = "com.jagrosh", name = "jda-utilities", version = "3.0.4")
 }
 
