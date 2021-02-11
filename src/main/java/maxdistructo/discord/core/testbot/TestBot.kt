@@ -15,6 +15,7 @@ object TestBot {
         println("Input your bot token: ")
         token = scanner.nextLine()
         val bot = Bot(token, "!!", "0")
+        bot.registerListener(TestListener())
         bot.init()
         for(guild in bot.client.guilds) {
             for (channel in guild.channels) {

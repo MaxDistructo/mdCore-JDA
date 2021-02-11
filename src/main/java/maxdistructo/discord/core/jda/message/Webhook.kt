@@ -11,10 +11,13 @@ import club.minnced.discord.webhook.WebhookClient
 import club.minnced.discord.webhook.send.WebhookEmbed
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder
 import club.minnced.discord.webhook.send.WebhookMessageBuilder
+
 import maxdistructo.discord.core.jda.Client
+
 import net.dv8tion.jda.api.entities.Icon
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.entities.TextChannel
+
 import java.net.URL
 
 object Webhook {
@@ -35,7 +38,7 @@ object Webhook {
         val client : WebhookClient = WebhookClient.withId(webhook.idLong, webhook.token!!)
         val messageBuilder = WebhookMessageBuilder()
         messageBuilder.setContent(message)
-        client.send(messageBuilder.build())
+        client.send(messageBuilder.build()).join()
         client.close()
         webhook.delete().complete()
     }
@@ -45,7 +48,7 @@ object Webhook {
         val client : WebhookClient = WebhookClient.withId(webhook.idLong, webhook.token!!)
         val messageBuilder = WebhookMessageBuilder()
         messageBuilder.setContent(message)
-        client.send(messageBuilder.build())
+        client.send(messageBuilder.build()).join()
         client.close()
         webhook.delete().complete()
     }
@@ -54,7 +57,7 @@ object Webhook {
         val client : WebhookClient = WebhookClient.withId(webhook.idLong, webhook.token!!)
         val messageBuilder = WebhookMessageBuilder()
         messageBuilder.setContent(message)
-        client.send(messageBuilder.build())
+        client.send(messageBuilder.build()).join()
         client.close()
     }
 
@@ -74,18 +77,20 @@ object Webhook {
     fun send(webhook: net.dv8tion.jda.api.entities.Webhook, embeds: Collection<WebhookEmbed>){
         val client : WebhookClient = WebhookClient.withId(webhook.idLong, webhook.token!!)
         //reformat vararg embed into a MutableList due to WebhookClient.send not liking the vararg format
-        client.send(embeds)
+        client.send(embeds).join()
         client.close()
     }
 
-    fun defaultWebhook(channel : TextChannel) : net.dv8tion.jda.api.entities.Webhook{
-        for(webhook in channel.retrieveWebhooks().complete(true)){
-            if(webhook.name == Client.getApplicationInfo().name){
+    fun defaultWebhook(channel: TextChannel): net.dv8tion.jda.api.entities.Webhook {
+        for (webhook in channel.retrieveWebhooks().complete(true)) {
+            if (webhook.name == Client.getApplicationInfo().name) {
                 return webhook
             }
         }
         //10/24/2020 - The old default icon no longer exists. F
-        return channel.createWebhook("bot").setAvatar(Icon.from(URL("https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1200px-Icon-round-Question_mark.svg.png").openStream())).setName("bot").complete(true)
+        return channel.createWebhook(Client.getApplicationInfo().name)
+                .setAvatar(Icon.from(URL("https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1200px-Icon-round-Question_mark.svg.png").openStream()))
+                .setName(Client.getApplicationInfo().name).complete()
     }
 
     private fun messageEmbedToWebhookEmbed(embed : MessageEmbed) : WebhookEmbed {
