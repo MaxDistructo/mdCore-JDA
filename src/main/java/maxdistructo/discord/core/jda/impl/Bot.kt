@@ -8,6 +8,7 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter
 import maxdistructo.discord.core.Utils
 import maxdistructo.discord.core.jda.Client
 import maxdistructo.discord.core.jda.Config
+import maxdistructo.discord.core.jda.SlashCommandClient
 import maxdistructo.discord.core.jda_utils.BlacklistCommandListener
 import maxdistructo.discord.core.jda_utils.Blacklisting
 import net.dv8tion.jda.api.JDA
@@ -15,8 +16,12 @@ import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.OnlineStatus
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.entities.ISnowflake
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.requests.GatewayIntent
+import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction
+import org.apache.commons.collections4.map.LinkedMap
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -34,12 +39,15 @@ class Bot(private var token: String, private var prefix: String, private var own
     private var listeners : LinkedList<ListenerAdapter> = LinkedList()
     private var commands : LinkedList<Command> = LinkedList()
     private var coOwners: LinkedList<String> = LinkedList()
+    private var slashCommands : LinkedMap<String, Pair<CommandData, (SlashCommandEvent) -> Any>> = LinkedMap()
     private lateinit var privClient : JDA
     private var privName : String = ""
     private lateinit var privLogger : Logger
     private lateinit var privCommandClient : CommandClient
     private lateinit var commandBuilder: CommandClientBuilder
+    private lateinit var privSlashCommandClient : CommandListUpdateAction
     private var intents: MutableList<GatewayIntent> = mutableListOf()
+    var initalized: Boolean = false
 
     val commandAPI : CommandClient
         get() = privCommandClient
@@ -62,6 +70,13 @@ class Bot(private var token: String, private var prefix: String, private var own
     }
     fun registerCommands(vararg commandsIn : Command){
         commands.addAll(commandsIn)
+    }
+    fun registerSlashCommand(name: String, data: CommandData, runFunction: (SlashCommandEvent) -> Any) {
+        slashCommands[name] = Pair(data, runFunction)
+        if(initalized && slashCommands.size <= 100) {
+            privSlashCommandClient.addCommands(data)
+            privSlashCommandClient.queue()
+        }
     }
 
     fun setOwnerId(id: String) {
@@ -105,6 +120,9 @@ class Bot(private var token: String, private var prefix: String, private var own
         privCommandClient = commandBuilder.build() //Builds the CommandClient
         builder.addEventListeners(waiter, commandAPI) //Adds the Command Listeners
 
+        //SlashCommand API Setup
+        builder.addEventListeners(SlashCommandClient(slashCommands)) //Pass the slash commands that have been registered to the Listener
+
         //Additional Listener Check
         if(listeners.isNotEmpty()){
             listeners.stream().forEach { listener -> builder.addEventListeners(listener) }
@@ -113,6 +131,17 @@ class Bot(private var token: String, private var prefix: String, private var own
         //Actual Bot Login and Startup
         privClient = builder.build().awaitReady()
         privLogger = LoggerFactory.getLogger(privClient.selfUser.name) as Logger
+
+        //Since we need the JDA client to be ready BEFORE we register the slash commands, finish the registration here
+        privSlashCommandClient = privClient.updateCommands()
+        for(command in slashCommands)
+        {
+            privSlashCommandClient.addCommands(command.value.first)
+        }
+        privSlashCommandClient.queue()
+
+        //Set a flag so that any new slash commands created automatically get added to the bot even if created after init.
+        initalized = true
 
         //Internal API Startup Code
         Client.client = privClient
