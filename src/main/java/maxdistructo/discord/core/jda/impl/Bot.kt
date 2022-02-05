@@ -24,6 +24,8 @@ import java.util.*
  * @class Bot
  * Sets up a simple discord bot and logger. Any values that are needed to be taken out are avaliable.
  * @param token The private Discord Token for your bot.
+ * @param prefix The prefix for your bot
+ * @param ownerId The Snowflake ID for the owner of the bot
  */
 
 class Bot(private var token: String, private var prefix: String, private var ownerId: String) {
@@ -40,6 +42,7 @@ class Bot(private var token: String, private var prefix: String, private var own
     private lateinit var privCommandClient : CommandClient
     private lateinit var commandBuilder: CommandClientBuilder
     private var intents: MutableList<GatewayIntent> = mutableListOf()
+    private var jda_utils = true
 
     val commandAPI : CommandClient
         get() = privCommandClient
@@ -85,6 +88,13 @@ class Bot(private var token: String, private var prefix: String, private var own
     }
 
     /**
+     * Run this to disable the setup of JDA-Utilities or it's forks such as Chewtils
+     */
+    fun disableJDAUtils(){
+        jda_utils = false;
+    }
+
+    /**
      * @function init()
      * @description Starts up the bot after being setup. Allows for multiple variables to be added to the bot before it starts up.
      */
@@ -97,13 +107,19 @@ class Bot(private var token: String, private var prefix: String, private var own
         builder.setActivity(Activity.playing("Loading...."))
 
         //Command API Setup Code
-        commandBuilder = CommandClientBuilder().useDefaultGame().setPrefix(prefix).setOwnerId("" + ownerId)
-        val waiter = EventWaiter()
-        commands.stream().forEach { command -> commandBuilder.addCommands(command) } //Adds all registered commands to the CommandClient
-        commandBuilder.setListener(BlacklistCommandListener(Utils.convertToLong(ownerId)!!))
-        commandBuilder.addCommands(Blacklisting.CommandBan(), Blacklisting.CommandUnban())
-        privCommandClient = commandBuilder.build() //Builds the CommandClient
-        builder.addEventListeners(waiter, commandAPI) //Adds the Command Listeners
+        if(jda_utils) {
+            commandBuilder = CommandClientBuilder().useDefaultGame().setPrefix(prefix).setOwnerId("" + ownerId)
+            val waiter = EventWaiter()
+            commands.stream()
+                .forEach { command -> commandBuilder.addCommands(command) } //Adds all registered commands to the CommandClient
+            commandBuilder.setListener(BlacklistCommandListener(Utils.convertToLong(ownerId)!!))
+            commandBuilder.addCommands(Blacklisting.CommandBan(), Blacklisting.CommandUnban())
+            privCommandClient = commandBuilder.build() //Builds the CommandClient
+            builder.addEventListeners(waiter, commandAPI) //Adds the Command Listeners
+        }
+        else{
+            //TODO: Implement non JDA-Utils interface for the Blacklisting features.
+        }
 
         //Additional Listener Check
         if(listeners.isNotEmpty()){
@@ -117,6 +133,10 @@ class Bot(private var token: String, private var prefix: String, private var own
         //Internal API Startup Code
         Client.client = privClient
         Client.LOGGER = privLogger
+
+        //We've finished init, set ourselves online. This should be almost immediate depending on network/host speed
+        privClient.presence.setStatus(OnlineStatus.ONLINE)
+        privClient.presence.activity = Activity.playing(prefix + "help")
 
         return this
     }

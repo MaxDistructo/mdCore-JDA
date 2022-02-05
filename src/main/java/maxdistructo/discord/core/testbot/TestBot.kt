@@ -16,6 +16,7 @@ object TestBot {
         token = scanner.nextLine()
         val bot = Bot(token, "!!", "0")
         bot.registerListener(TestListener())
+        bot.disableJDAUtils()
         bot.init()
         for(guild in bot.client.guilds) {
             for (channel in guild.channels) {

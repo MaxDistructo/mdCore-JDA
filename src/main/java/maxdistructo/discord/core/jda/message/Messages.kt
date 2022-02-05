@@ -15,9 +15,28 @@ import java.util.*
 
 object Messages {
 
+    /**
+     *
+     * Creates an embed with the provided parameters. This is essentially the simpleEmbed but with a title
+     * @param user The User who we want to be the author of this embed.
+     * @param title The title of the embeded message
+     * @param description The description on the embed
+     * @param message The message that caused us to create this embed. Used to pull other values.
+     *
+     */
     fun simpleTitledEmbed(user: Member, title: String, description: String, message: Message): MessageEmbed {
         return simpleTitledEmbed(user, title, description, message.guild)
     }
+
+    /**
+     *
+     * Creates an embed with the provided parameters. This is essentially the simpleEmbed but with a title
+     * @param user The User who we want to be the author of this embed.
+     * @param title The title of the embeded message
+     * @param description The description on the embed
+     * @param guild The Guild object of the guild we will be putting this embed in.
+     *
+     */
 
     fun simpleTitledEmbed(user: Member, title: String, description: String, guild: Guild): MessageEmbed {
         val builder = EmbedBuilder()
@@ -34,9 +53,32 @@ object Messages {
         return builder.build()
     }
 
+    /**
+     *
+     * Creates a simple Embeded message to send. We don't want to go overkill on this but we want to make it look not
+     * horrid by personalizing the message to the guild and user who this embed is a reply to.
+     *
+     * @param user The User who we want to be the author of this embed.
+     * @param description The description on the embed
+     * @param message The message that caused us to create this embed. Used to pull other values.
+     *
+     */
+
     fun simpleEmbed(user: Member, description: String, message: Message): MessageEmbed {
         return simpleEmbed(user, description, message.guild)
     }
+
+    /**
+     *
+     * Creates a simple Embeded message to send. We don't want to go overkill on this but we want to make it look not
+     * horrid by personalizing the message to the guild and user who this embed is a reply to.
+     *
+     * @param user The User who we want to be the author of this embed.
+     * @param description The description on the embed
+     * @param guild The guild where we will be sending this embed after creation. Could be another guild that the bot
+     * is in if you wish to cross post for whatever reason.
+     *
+     */
 
     fun simpleEmbed(user: Member, description: String, guild: Guild): MessageEmbed {
         val builder = EmbedBuilder()
@@ -52,13 +94,44 @@ object Messages {
         return builder.build()
     }
 
+    /**
+     *
+     * Sends a Direct Message to the Member/User we specify. This allows us to just ask for a message to be sent
+     * with only the information we need to send it.
+     *
+     * @param member The Member who we want to send a DM to
+     * @param message The message we want to send to that user.
+     *
+     */
+
     fun sendDM(member: Member, message: String): Message{
         return sendDM(member.user, message);
     }
 
+    /**
+     *
+     * Sends a Direct Message to the Member/User we specify. This allows us to just ask for a message to be sent
+     * with only the information we need to send it.
+     *
+     * @param user The User who we want to send a DM to
+     * @param message The message we want to send to that user.
+     *
+     */
+
     fun sendDM(user: User, message: String): Message {
         return sendDM(user, message, true)
     }
+
+    /**
+     *
+     * Sends a Direct Message to the Member/User we specify. This allows us to just ask for a message to be sent
+     * with only the information we need to send it. This also has an optional parameter to wait for the message to be
+     * sent before returning, blocking execution.
+     *
+     * @param user The Member who we want to send a DM to
+     * @param message The message we want to send to that user.
+     *
+     */
 
     fun sendDM(user: User, message: String, waitForComplete: Boolean) : Message {
         val pm: PrivateChannel = user.openPrivateChannel().complete()
@@ -80,11 +153,12 @@ object Messages {
         return sendDM(user, embed, true)
     }
 
+
     fun sendDM(user: User, embed: MessageEmbed, waitForComplete : Boolean) : Message {
         val pm: PrivateChannel? = user.openPrivateChannel().complete()
         lateinit var builder: MessageAction
         assert(pm != null)
-        builder = pm!!.sendMessage(embed)
+        builder = pm!!.sendMessageEmbeds(embed)
         return if(waitForComplete){
             builder.complete(true)
         }
@@ -135,11 +209,11 @@ object Messages {
     }
 
     fun sendMessage(channel: TextChannel, embedded: MessageEmbed): Message {
-        return channel.sendMessage(embedded).complete(true)
+        return channel.sendMessageEmbeds(embedded).complete(true)
     }
 
     fun sendMessage(channel: TextChannel, embedded: MessageEmbed, waitForComplete: Boolean) {
-        val builder =  channel.sendMessage(embedded)
+        val builder =  channel.sendMessageEmbeds(embedded)
         if(waitForComplete){
             builder.complete()
         }
