@@ -22,16 +22,37 @@ object Config {
         return Integer.valueOf(`in`.toString())
     }
 
+    /**
+     *
+     * @function readToken
+     * @return String - The token from the config file.
+     *
+     */
     fun readToken(): String {
         val root = JSONUtils.readJSONFromFile("/config/config.txt")
         return root.getString("Token")
 
     }
 
+    /**
+     *
+     * @function readPrefix
+     * @return String - The prefix from the config file.
+     *
+     */
+
     fun readPrefix(): String {
         val root = JSONUtils.readJSONFromFile("/config/config.txt")
         return root.getString("Prefix")
     }
+
+    /**
+     *
+     * @function readServerModConfig
+     * @param guild The guild whose list of moderators we wish to pull.
+     * @return List<Long> - The raw list of id's for each of the moderators
+     *
+     */
 
     fun readServerModConfig(guild: Guild): List<Long> {
         val root = JSONUtils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
@@ -39,11 +60,27 @@ object Config {
         return array.toList() as List<Long>
     }
 
+    /**
+     *
+     * @function readServerAdminConfig
+     * @param guild The guild whose list of moderators we wish to pull.
+     * @return List<Long> - The raw list of id's for each of the Administrators
+     *
+     */
+
     fun readServerAdminConfig(guild: Guild): List<Long> {
         val root = JSONUtils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
         val array = root.getJSONArray("Admins")
         return array.toList() as List<Long>
     }
+
+    /**
+     *
+     * @function readServerGamesConfig
+     * @param guild The guild whose list of game channels we wish to pull.
+     * @return List<String?> - The raw list of game channel names for the specified server.
+     *
+     */
 
     fun readServerGamesConfig(guild: Guild): List<String?> {
         val root = JSONUtils.readJSONFromFile("/config/guild/" + guild.idLong + ".txt")
@@ -76,6 +113,13 @@ object Config {
         val config = readConfig()
         return config.getBoolean("debug")
     }
+
+    /**
+     *
+     * @function readConfig
+     * @return JSONObject - The JSONObject representing the JSON contained in the default config file.
+     *
+     */
     fun readConfig() : JSONObject{
         return JSONUtils.readJSONFromFile("/config/config.txt")
     }
